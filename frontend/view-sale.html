@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sale Items - Swish Drip Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/view-pages.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="index.html">Swish Drip Store</a></h1>
+    <nav>
+      <ul>
+        <li><a href="view-brand.html">Brand</a></li>
+        <li><a href="view-thrift.html">Thrift</a></li>
+        <li><a href="index.html#sale" class="active">Sale / Deals</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="index.html#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="view-page">
+    <!-- Page Header -->
+    <div class="page-header sale-header">
+      <div class="page-header-content">
+        <h1>🔥 Sale Items</h1>
+        <p class="page-subtitle">Limited time deals & discounts</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> &gt; <span>Sale Items</span>
+        </div>
+        <div class="sale-timer">
+          <div class="timer-badge">
+            <span class="timer-icon">⏰</span>
+            <span>Limited Time Offers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="shop-controls">
+      <div class="search-container">
+        <input type="text" id="global-search" placeholder="Search sale items..." 
+               style="width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+      </div>
+      
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select" class="sort-dropdown">
+            <option value="discount">Highest Discount</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="newest">Newest Arrivals</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="category-filter">Category:</label>
+          <select id="category-filter" class="filter-dropdown">
+            <option value="all">All Categories</option>
+            <option value="brand">Brand Only</option>
+            <option value="thrift">Thrift Only</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="discount-filter">Discount:</label>
+          <select id="discount-filter" class="filter-dropdown">
+            <option value="all">Any Discount</option>
+            <option value="10+">10% or more</option>
+            <option value="20+">20% or more</option>
+            <option value="30+">30% or more</option>
+            <option value="50+">50% or more</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="price-range">Price Range:</label>
+          <select id="price-range" class="filter-dropdown">
+            <option value="all">All Prices</option>
+            <option value="0-100">Under R100</option>
+            <option value="100-250">R100 - R250</option>
+            <option value="250-500">R250 - R500</option>
+          </select>
+        </div>
+        
+        <button id="clear-filters" class="btn">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info">
+      <span id="results-count">Loading sale items...</span>
+      <div class="sale-highlights">
+        <span class="sale-badge">🔥 Hot Deals</span>
+        <span class="sale-badge">💎 Premium Discounts</span>
+        <span class="sale-badge">⚡ Limited Stock</span>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="content-container">
+      <div class="product-grid-container">
+        <div class="product-grid" id="product-grid">
+          <!-- Products will be loaded here -->
+        </div>
+        
+        <div id="loading-area" style="text-align:center; padding:40px;">
+          <div id="loading-spinner" class="spinner"></div>
+          <p id="loading-message">Loading sale items...</p>
+          <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+        </div>
+        
+        <div id="no-products" style="display:none; text-align:center; padding:60px;">
+          <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🔥</div>
+          <h3>No Sale Items Available</h3>
+          <p>Check back soon for new deals and promotions.</p>
+          <div style="margin-top:20px;">
+            <a href="view-brand.html" class="btn" style="margin-right:10px;">Shop Brand</a>
+            <a href="view-thrift.html" class="btn">Shop Thrift</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>🔥 Flash Sale Tips</h3>
+          <p>Sale items sell fast! Add to cart quickly to secure your deal.</p>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Best Value Picks</h3>
+          <div class="value-picks" id="value-picks">
+            <!-- Top value items will be loaded here -->
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>How Our Sales Work</h3>
+          <ul class="feature-list">
+            <li>✅ Limited Time Offers</li>
+            <li>✅ Clearance Items</li>
+            <li>✅ Seasonal Discounts</li>
+            <li>✅ Bundle Deals</li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <div class="promo-banner sale-promo">
+            <div class="promo-content">
+              <span class="promo-badge">SALE</span>
+              <h4>Extra 10% Off</h4>
+              <p>Use code: SWISH10 at checkout</p>
+              <span class="promo-cta">Apply Code →</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Need Help?</h3>
+          <p>Email us for sale inquiries: <strong>sales@swishdrip.com</strong></p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display:none;">
+      <!-- Pagination will be loaded here -->
+    </div>
+  </main>
+
+  <!-- MODALS (Same as index.html) -->
+  <!-- Include same modals as view-brand.html -->
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Swish Drip Store</h3>
+        <p>Premium streetwear and thrift clothing</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="view-brand.html">Brand Collection</a></li>
+          <li><a href="view-thrift.html">Thrift Collection</a></li>
+          <li><a href="view-sale.html">Sale Items</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <p>Email: info@swishdrip.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2025 Swish Drip Store. All rights reserved.</p>
+  </footer>
+
+  <script src="js/view-pages.js"></script>
+  <script>
+    // Initialize page-specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set active category
+      window.currentCategory = 'sale';
+      console.log('Sale page loaded');
+    });
+  </script>
+</body>
+</html>

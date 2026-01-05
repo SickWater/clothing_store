@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog - Swish Drip Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/blog.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="index.html">Swish Drip Store</a></h1>
+    <nav>
+      <ul>
+        <li><a href="view-brand.html">Brand</a></li>
+        <li><a href="view-thrift.html">Thrift</a></li>
+        <li><a href="view-sale.html">Sale / Deals</a></li>
+        <li><a href="index.html#blog" class="active">Blog</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="index.html#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="blog-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <h1>Swish Drip Blog</h1>
+        <p class="page-subtitle">Streetwear insights, style tips & fashion news</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> &gt; <span>Blog</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blog Content -->
+    <div class="content-container">
+      <!-- Featured Article -->
+      <section class="featured-article" id="featured-article">
+        <div class="featured-image">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
+               alt="Featured Article">
+          <div class="featured-badge">FEATURED</div>
+        </div>
+        <div class="featured-content">
+          <div class="article-meta">
+            <span class="category-badge fashion">Fashion</span>
+            <span class="date">March 15, 2024</span>
+            <span class="read-time">5 min read</span>
+          </div>
+          <h2><a href="blog-article.html?id=1">The Evolution of Streetwear: From Subculture to Mainstream</a></h2>
+          <p class="article-excerpt">Explore how streetwear transformed from underground subculture to dominating global fashion trends. Learn about key brands, cultural influences, and what's next for street fashion.</p>
+          <a href="blog-article.html?id=1" class="read-more">Read Full Article →</a>
+        </div>
+      </section>
+
+      <!-- Blog Categories -->
+      <div class="blog-categories">
+        <h2>Browse by Category</h2>
+        <div class="category-filters">
+          <button class="category-btn active" data-category="all">All Articles</button>
+          <button class="category-btn" data-category="fashion">Fashion</button>
+          <button class="category-btn" data-category="style">Style Tips</button>
+          <button class="category-btn" data-category="sustainability">Sustainability</button>
+          <button class="category-btn" data-category="brands">Brand Spotlights</button>
+          <button class="category-btn" data-category="trends">Trends</button>
+        </div>
+      </div>
+
+      <!-- Articles Grid -->
+      <section class="articles-grid" id="articles-grid">
+        <!-- Article cards will be loaded here -->
+      </section>
+
+      <!-- Newsletter -->
+      <section class="newsletter-section">
+        <div class="newsletter-content">
+          <h2>Stay Updated</h2>
+          <p>Subscribe to our newsletter for the latest streetwear news, style tips, and exclusive deals.</p>
+          <form id="newsletter-form" class="newsletter-form">
+            <input type="email" placeholder="Your email address" required>
+            <button type="submit" class="btn primary">Subscribe</button>
+          </form>
+          <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Swish Drip Store</h3>
+        <p>Premium streetwear and thrift clothing</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="view-brand.html">Brand Collection</a></li>
+          <li><a href="view-thrift.html">Thrift Collection</a></li>
+          <li><a href="view-sale.html">Sale Items</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <p>Email: info@swishdrip.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2025 Swish Drip Store. All rights reserved.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/blog.js"></script>
+</body>
+</html>

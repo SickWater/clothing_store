@@ -1,0 +1,56 @@
+HOW WE WILL PROCEED (This order prevents mistakes)
+STEP 1 — You send the backend NOW
+
+Send the backend files in this order:
+
+Product.js
+
+multerConfig.js
+
+productRoutes.js
+
+adminRoutes.js
+
+db.js
+
+server.js
+
+I will analyse them and map them to the features you want.
+
+✅ STEP 2 — I tell you what needs to change in the backend
+
+Before we touch the frontend:
+
+I check if the backend can support stock-by-size
+
+If schema supports sale price, thumbnails, categories, etc
+
+If login system is missing → I design clean version
+
+If productRoutes need expansion → fix it
+
+If adminRoutes match admin page → fix it
+
+If multerConfig needs updating for multiple images → fix it
+
+Basically I’ll make sure:
+
+The backend is 100% ready for all features in Phase 1–5.
+
+✅ STEP 3 — Then you send admin HTML + admin JS
+
+With backend matched to admin structure, I will:
+
+Fix adding/editing products
+
+Add filtering
+
+Add size stock editing
+
+Add image preview system
+
+Add admin search
+
+Fix upload structure
+
+Build clean admin UI logic

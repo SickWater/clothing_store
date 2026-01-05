@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swish Drip Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Swish Drip Store</h1>
+    <nav>
+      <ul>
+        <li><a href="view-brand.html">Brand</a></li>
+        <li><a href="view-thrift.html">Thrift</a></li>
+        <li><a href="#sale">Sale / Deals</a></li>
+        <li><a href="#blog">Blog / Style Tips</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+        <li><a href="#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <div class="shop-controls">
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" id="global-search" placeholder="Search products by name, brand, category..." 
+             style="width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+    </div>
+    
+    <!-- Sorting & Filtering Bar -->
+    <div class="filter-controls">
+      <!-- Sorting -->
+      <div class="filter-group">
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select" class="sort-dropdown">
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="sale">Best Deals (On Sale)</option>
+          <option value="popular">Most Popular</option>
+        </select>
+      </div>
+      
+      <!-- Category Filter -->
+      <div class="filter-group">
+        <label for="category-filter">Category:</label>
+        <select id="category-filter" class="filter-dropdown">
+          <option value="all">All Categories</option>
+          <option value="brand">Brand</option>
+          <option value="thrift">Thrift</option>
+        </select>
+      </div>
+      
+      <!-- Price Range -->
+      <div class="filter-group">
+        <label for="price-range">Price Range:</label>
+        <select id="price-range" class="filter-dropdown">
+          <option value="all">All Prices</option>
+          <option value="0-100">Under R100</option>
+          <option value="100-300">R100 - R300</option>
+          <option value="300-500">R300 - R500</option>
+          <option value="500+">R500+</option>
+        </select>
+      </div>
+      
+      <!-- Clear Filters Button -->
+      <button id="clear-filters" class="btn">Clear Filters</button>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- SHOP (Hidden but still loads products in JS) -->
+    <section id="shop" style="display:none;">
+      <h2>Shop</h2>
+
+      <div id="loading-area">
+        <div id="loading-spinner" class="spinner"></div>
+        <p id="loading-message">Loading products...</p>
+        <button id="retry-btn" style="display:none;">Retry</button>
+        <p id="no-products" style="display:none;">No items found.</p>
+      </div>
+
+      <div class="product-grid" id="product-list"></div>
+    </section>
+
+    <!-- SALE -->
+    <section id="sale">
+      <h2>🔥 Sale / Deals</h2>
+      <div class="product-grid" id="sale-grid"></div>
+      <p id="no-sale" style="display:none;">No deals right now — check back soon!</p>
+    </section>
+
+    <!-- BRAND -->
+    <section id="brand">
+      <h2>Brand Collection</h2>
+
+      <div class="filter-bar">
+        <label for="brand-filter">Filter:</label>
+        <select id="brand-filter"></select>
+      </div>
+
+      <div class="product-grid" id="brand-grid"></div>
+    </section>
+
+    <!-- THRIFT -->
+    <section id="thrift">
+      <h2>Thrift Collection</h2>
+
+      <div class="filter-bar">
+        <label for="thrift-filter">Filter by type:</label>
+        <select id="thrift-filter"></select>
+      </div>
+
+      <div class="product-grid" id="thrift-grid"></div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog">
+      <h2>Blog / Style Tips</h2>
+
+      <article>
+        <h3>5 Ways to Style Your Hoodie</h3>
+        <p>Discover different ways to rock a hoodie in any season.</p>
+      </article>
+
+      <article>
+        <h3>Why Thrift is the Future</h3>
+        <p>Learn how sustainable fashion is changing the industry.</p>
+      </article>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+
+      <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" required />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required />
+
+        <label for="message">Message:</label>
+        <textarea id="message" required></textarea>
+
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
+    <!-- CART -->
+    <section id="cart">
+      <h2>Your Cart</h2>
+      <div id="cart-editor">
+        <!-- Cart items will be loaded here with editing controls -->
+      </div>
+      <div id="cart-summary">
+        <p>Subtotal: R<span id="cart-subtotal">0</span></p>
+        <p>Shipping: R<span id="cart-shipping">0</span></p>
+        <p>Total: R<span id="cart-total">0</span></p>
+      </div>
+      <button id="checkout-btn">Proceed to Checkout</button>
+      <button id="clear-cart-btn" class="clear">Clear Cart</button>
+    </section>
+    
+    
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Swish Drip Store</p>
+  </footer>
+
+  <!-- LOGIN / REGISTER MODAL -->
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="modal" style="display:none;">
+  <div class="modal-content auth-modal-container">
+    <span id="close-auth" class="close-btn">&times;</span>
+    
+    <!-- Left side - Brand Visual -->
+    <div class="auth-left">
+      <div class="auth-brand">
+        <h2>Welcome to<br><span class="brand-name">Swish Drip</span></h2>
+        <p class="auth-tagline">Sign in to shop exclusive streetwear collections</p>
+      </div>
+      <div class="auth-features">
+        <div class="feature">
+          <span class="feature-icon">🛒</span>
+          <span>Add items to cart</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">⚡</span>
+          <span>Faster checkout</span>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">💎</span>
+          <span>Exclusive deals</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Right side - Auth Forms -->
+    <div class="auth-right">
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button id="login-tab" class="auth-tab active">Login</button>
+        <button id="register-tab" class="auth-tab">Register</button>
+      </div>
+      
+      <!-- Google Button (for both login and register) -->
+      <button type="button" id="google-auth-btn" class="google-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continue with Google
+      </button>
+      
+      <div class="divider">
+        <span>or with email</span>
+      </div>
+      
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form active">
+        <div class="form-group">
+          <input id="login-email" type="email" placeholder="Email address" required />
+        </div>
+        <div class="form-group">
+          <input id="login-password" type="password" placeholder="Password" required />
+        </div>
+        
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" id="remember-me">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-password">Forgot password?</a>
+        </div>
+        
+        <button id="login-submit" type="submit" class="submit-btn">
+          Sign In
+        </button>
+        
+        <p class="switch-form">
+          Don't have an account? <a href="#" id="switch-to-register">Sign up</a>
+        </p>
+      </form>
+      
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form">
+        <div class="form-group">
+          <input id="reg-name" type="text" placeholder="Full name" required />
+        </div>
+        <div class="form-group">
+          <input id="reg-email" type="email" placeholder="Email address" required />
+        </div>
+        <div class="form-group">
+          <input id="reg-password" type="password" placeholder="Create password (min. 6 characters)" required />
+        </div>
+        
+        <div class="terms">
+          <input type="checkbox" id="accept-terms" required>
+          <label for="accept-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        
+        <button id="register-submit" type="submit" class="submit-btn">
+          Create Account
+        </button>
+        
+        <p class="switch-form">
+          Already have an account? <a href="#" id="switch-to-login">Sign in</a>
+        </p>
+      </form>
+      
+      <div id="auth-message"></div>
+    </div>
+  </div>
+</div>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+
+      <div class="modal-left">
+        <img id="modal-main-img" src="" alt="Product Image">
+        <div id="modal-thumbnails"></div>
+      </div>
+
+      <div class="modal-right">
+        <h2 id="modal-name"></h2>
+        <p id="modal-price"></p>
+        <p id="modal-description"></p>
+        <div id="modal-sizes-area" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <button id="modal-add-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal">&times;</span>
+      <h2>Order Summary</h2>
+      <ul id="order-summary"></ul>
+      <p>Total: R<span id="order-total">0</span></p>
+      <!-- injected inputs for guest or logged users (JS will toggle) -->
+      <div id="checkout-info-container"></div>
+      <button id="place-order">Place Order</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+

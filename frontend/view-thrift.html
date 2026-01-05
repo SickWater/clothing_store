@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thrift Collection - Swish Drip Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/view-pages.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="index.html">Swish Drip Store</a></h1>
+    <nav>
+      <ul>
+        <li><a href="view-brand.html">Brand</a></li>
+        <li><a href="index.html#thrift" class="active">Thrift</a></li>
+        <li><a href="view-sale.html">Sale / Deals</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="index.html#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="view-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <h1>Thrift Collection</h1>
+        <p class="page-subtitle">Sustainable fashion & unique finds</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> &gt; <span>Thrift Collection</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="shop-controls">
+      <div class="search-container">
+        <input type="text" id="global-search" placeholder="Search thrift items..." 
+               style="width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+      </div>
+      
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select" class="sort-dropdown">
+            <option value="newest">Newest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="condition">Best Condition</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="clothing-filter">Type:</label>
+          <select id="clothing-filter" class="filter-dropdown">
+            <option value="all">All Types</option>
+            <!-- Options will be populated by JavaScript -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="condition-filter">Condition:</label>
+          <select id="condition-filter" class="filter-dropdown">
+            <option value="all">All Conditions</option>
+            <option value="like_new">Like New</option>
+            <option value="good">Good</option>
+            <option value="fair">Fair</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="price-range">Price Range:</label>
+          <select id="price-range" class="filter-dropdown">
+            <option value="all">All Prices</option>
+            <option value="0-50">Under R50</option>
+            <option value="50-100">R50 - R100</option>
+            <option value="100-200">R100 - R200</option>
+            <option value="200+">R200+</option>
+          </select>
+        </div>
+        
+        <button id="clear-filters" class="btn">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info">
+      <span id="results-count">Loading thrift items...</span>
+      <span id="active-filters" class="active-filters"></span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="content-container">
+      <div class="product-grid-container">
+        <div class="product-grid" id="product-grid">
+          <!-- Products will be loaded here -->
+        </div>
+        
+        <div id="loading-area" style="text-align:center; padding:40px;">
+          <div id="loading-spinner" class="spinner"></div>
+          <p id="loading-message">Loading thrift items...</p>
+          <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+        </div>
+        
+        <div id="no-products" style="display:none; text-align:center; padding:60px;">
+          <div style="font-size:48px; color:#ddd; margin-bottom:20px;">♻️</div>
+          <h3>No Thrift Items Found</h3>
+          <p>Try changing your filters or check back later for new sustainable finds.</p>
+          <button id="reset-filters" class="btn">Reset All Filters</button>
+        </div>
+      </div>
+      
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>About Thrift Items</h3>
+          <p>Our thrift collection features sustainable, pre-loved clothing with unique character and history.</p>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Condition Guide</h3>
+          <div class="condition-guide">
+            <div class="condition-item">
+              <span class="condition-badge like-new">Like New</span>
+              <p>Looks unworn, perfect condition</p>
+            </div>
+            <div class="condition-item">
+              <span class="condition-badge good">Good</span>
+              <p>Minor signs of wear, excellent value</p>
+            </div>
+            <div class="condition-item">
+              <span class="condition-badge fair">Fair</span>
+              <p>Visible wear, great for upcycling</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Why Thrift?</h3>
+          <ul class="feature-list">
+            <li>✅ Sustainable Fashion</li>
+            <li>✅ Unique Finds</li>
+            <li>✅ Affordable Prices</li>
+            <li>✅ Reduce Waste</li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <a href="blog.html?article=sustainable-fashion" class="promo-banner eco">
+            <div class="promo-content">
+              <span class="promo-badge">ECO</span>
+              <h4>Sustainable Fashion Guide</h4>
+              <p>Learn about eco-friendly fashion choices</p>
+              <span class="promo-cta">Read Article →</span>
+            </div>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display:none;">
+      <!-- Pagination will be loaded here -->
+    </div>
+  </main>
+
+  <!-- MODALS (Same as index.html) -->
+  <!-- Include same modals as view-brand.html -->
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Swish Drip Store</h3>
+        <p>Premium streetwear and thrift clothing</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="view-brand.html">Brand Collection</a></li>
+          <li><a href="view-thrift.html">Thrift Collection</a></li>
+          <li><a href="view-sale.html">Sale Items</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <p>Email: info@swishdrip.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2025 Swish Drip Store. All rights reserved.</p>
+  </footer>
+
+  <script src="js/view-pages.js"></script>
+  <script>
+    // Initialize page-specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set active category
+      window.currentCategory = 'thrift';
+      console.log('Thrift page loaded');
+    });
+  </script>
+</body>
+</html>

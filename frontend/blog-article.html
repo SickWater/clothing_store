@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article Title - Swish Drip Blog</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/blog.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="index.html">Swish Drip Store</a></h1>
+    <nav>
+      <ul>
+        <li><a href="view-brand.html">Brand</a></li>
+        <li><a href="view-thrift.html">Thrift</a></li>
+        <li><a href="view-sale.html">Sale / Deals</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="index.html#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="article-page">
+    <!-- Article Header -->
+    <div class="article-header">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> &gt; 
+        <a href="blog.html">Blog</a> &gt; 
+        <span id="article-category">Fashion</span>
+      </div>
+      
+      <div class="article-meta">
+        <span class="category-badge" id="article-category-badge">Fashion</span>
+        <span class="date" id="article-date">March 15, 2024</span>
+        <span class="read-time" id="article-read-time">5 min read</span>
+      </div>
+      
+      <h1 id="article-title">The Evolution of Streetwear: From Subculture to Mainstream</h1>
+      
+      <div class="author-info">
+        <div class="author-avatar">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
+               alt="Author">
+        </div>
+        <div class="author-details">
+          <span class="author-name" id="article-author">Alex Morgan</span>
+          <span class="author-role">Fashion Editor</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Article Content -->
+    <article class="article-content">
+      <div class="article-image">
+        <img id="article-image" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
+             alt="Article Image">
+      </div>
+      
+      <div class="article-body" id="article-body">
+        <!-- Article content will be loaded here -->
+        <div class="loading-article">
+          <div class="spinner"></div>
+          <p>Loading article...</p>
+        </div>
+      </div>
+      
+      <!-- Related Products -->
+      <div class="related-products">
+        <h3>Shop Related Items</h3>
+        <div class="products-grid" id="related-products">
+          <!-- Related products will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Share & Actions -->
+      <div class="article-actions">
+        <div class="share-buttons">
+          <span>Share this article:</span>
+          <button class="share-btn facebook" onclick="shareOnFacebook()">Facebook</button>
+          <button class="share-btn twitter" onclick="shareOnTwitter()">Twitter</button>
+          <button class="share-btn whatsapp" onclick="shareOnWhatsApp()">WhatsApp</button>
+        </div>
+        <button class="back-to-blog" onclick="window.location.href='blog.html'">
+          ← Back to Blog
+        </button>
+      </div>
+    </article>
+
+    <!-- Related Articles -->
+    <section class="related-articles">
+      <h2>You Might Also Like</h2>
+      <div class="articles-grid" id="related-articles">
+        <!-- Related articles will be loaded here -->
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+      <div class="newsletter-content">
+        <h2>Enjoying This Article?</h2>
+        <p>Subscribe to our newsletter for more streetwear insights and style tips.</p>
+        <form id="newsletter-form" class="newsletter-form">
+          <input type="email" placeholder="Your email address" required>
+          <button type="submit" class="btn primary">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Swish Drip Store</h3>
+        <p>Premium streetwear and thrift clothing</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="view-brand.html">Brand Collection</a></li>
+          <li><a href="view-thrift.html">Thrift Collection</a></li>
+          <li><a href="view-sale.html">Sale Items</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <p>Email: info@swishdrip.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2025 Swish Drip Store. All rights reserved.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+  <script src="js/blog-article.js"></script>
+</body>
+</html>

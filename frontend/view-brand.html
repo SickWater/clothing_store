@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Collection - Swish Drip Store</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/view-pages.css" />
+</head>
+
+<body>
+  <header>
+    <h1><a href="index.html">Swish Drip Store</a></h1>
+    <nav>
+      <ul>
+        <li><a href="index.html#brand" class="active">Brand</a></li>
+        <li><a href="view-thrift.html">Thrift</a></li>
+        <li><a href="view-sale.html">Sale / Deals</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#contact">Contact Us</a></li>
+        <li><a href="index.html#cart">Cart 🛒</a></li>
+      </ul>
+    </nav>
+    <div id="user-area" style="position:absolute; right:16px; top:18px;">
+      <span id="user-greeting" style="margin-right:8px;"></span>
+      <button id="login-btn" class="btn">Login</button>
+      <button id="logout-btn" class="btn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <main class="view-page">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-content">
+        <h1>Brand Collection</h1>
+        <p class="page-subtitle">Premium streetwear & designer pieces</p>
+        <div class="breadcrumb">
+          <a href="index.html">Home</a> &gt; <span>Brand Collection</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="shop-controls">
+      <div class="search-container">
+        <input type="text" id="global-search" placeholder="Search brand items..." 
+               style="width:100%;padding:12px 16px;border:2px solid #ddd;border-radius:8px;font-size:16px;">
+      </div>
+      
+      <div class="filter-controls">
+        <div class="filter-group">
+          <label for="sort-select">Sort by:</label>
+          <select id="sort-select" class="sort-dropdown">
+            <option value="newest">Newest First</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="sale">Best Deals (On Sale)</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="clothing-filter">Type:</label>
+          <select id="clothing-filter" class="filter-dropdown">
+            <option value="all">All Types</option>
+            <!-- Options will be populated by JavaScript -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="brand-filter">Brand:</label>
+          <select id="brand-filter" class="filter-dropdown">
+            <option value="all">All Brands</option>
+            <!-- Options will be populated by JavaScript -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="price-range">Price Range:</label>
+          <select id="price-range" class="filter-dropdown">
+            <option value="all">All Prices</option>
+            <option value="0-100">Under R100</option>
+            <option value="100-300">R100 - R300</option>
+            <option value="300-500">R300 - R500</option>
+            <option value="500+">R500+</option>
+          </select>
+        </div>
+        
+        <button id="clear-filters" class="btn">Clear Filters</button>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info">
+      <span id="results-count">Loading brand items...</span>
+      <span id="active-filters" class="active-filters"></span>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="content-container">
+      <div class="product-grid-container">
+        <div class="product-grid" id="product-grid">
+          <!-- Products will be loaded here -->
+        </div>
+        
+        <div id="loading-area" style="text-align:center; padding:40px;">
+          <div id="loading-spinner" class="spinner"></div>
+          <p id="loading-message">Loading brand items...</p>
+          <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+        </div>
+        
+        <div id="no-products" style="display:none; text-align:center; padding:60px;">
+          <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🛍️</div>
+          <h3>No Brand Items Found</h3>
+          <p>Try changing your filters or check back later for new arrivals.</p>
+          <button id="reset-filters" class="btn">Reset All Filters</button>
+        </div>
+      </div>
+      
+      <!-- Sidebar (optional - for future features) -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <h3>About Brand Items</h3>
+          <p>Our brand collection features premium streetwear, designer pieces, and authentic branded clothing.</p>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Popular Brands</h3>
+          <div class="brand-tags" id="popular-brands">
+            <!-- Popular brands will be loaded here -->
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3>Why Choose Brand?</h3>
+          <ul class="feature-list">
+            <li>✅ Authentic & New</li>
+            <li>✅ Premium Quality</li>
+            <li>✅ Latest Styles</li>
+            <li>✅ Brand Warranty</li>
+          </ul>
+        </div>
+        
+        <div class="sidebar-section">
+          <a href="view-sale.html" class="promo-banner">
+            <div class="promo-content">
+              <span class="promo-badge">SALE</span>
+              <h4>Limited Time Deals</h4>
+              <p>Up to 50% off selected items</p>
+              <span class="promo-cta">Shop Now →</span>
+            </div>
+          </a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination" style="display:none;">
+      <!-- Pagination will be loaded here -->
+    </div>
+  </main>
+
+  <!-- MODALS (Same as index.html) -->
+   
+  <!-- AUTH MODAL -->
+  <div id="auth-modal" class="modal" style="display:none;">
+    <div class="modal-content auth-modal-container">
+      <span id="close-auth" class="close-btn">&times;</span>
+      <div class="auth-left">
+        <div class="auth-brand">
+          <h2>Welcome to<br><span class="brand-name">Swish Drip</span></h2>
+          <p class="auth-tagline">Sign in to shop exclusive streetwear collections</p>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="auth-tabs">
+          <button id="login-tab" class="auth-tab active">Login</button>
+          <button id="register-tab" class="auth-tab">Register</button>
+        </div>
+        <button type="button" id="google-auth-btn" class="google-btn">
+          Continue with Google
+        </button>
+        <div class="divider">
+          <span>or with email</span>
+        </div>
+        <form id="login-form" class="auth-form active">
+          <div class="form-group">
+            <input id="login-email" type="email" placeholder="Email address" required />
+          </div>
+          <div class="form-group">
+            <input id="login-password" type="password" placeholder="Password" required />
+          </div>
+          <button id="login-submit" type="submit" class="submit-btn">
+            Sign In
+          </button>
+          <p class="switch-form">
+            Don't have an account? <a href="#" id="switch-to-register">Sign up</a>
+          </p>
+        </form>
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <input id="reg-name" type="text" placeholder="Full name" required />
+          </div>
+          <div class="form-group">
+            <input id="reg-email" type="email" placeholder="Email address" required />
+          </div>
+          <div class="form-group">
+            <input id="reg-password" type="password" placeholder="Create password (min. 6 characters)" required />
+          </div>
+          <button id="register-submit" type="submit" class="submit-btn">
+            Create Account
+          </button>
+          <p class="switch-form">
+            Already have an account? <a href="#" id="switch-to-login">Sign in</a>
+          </p>
+        </form>
+        <div id="auth-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL MODAL -->
+  <div id="product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div class="modal-left">
+        <img id="modal-main-img" src="" alt="Product Image">
+        <div id="modal-thumbnails"></div>
+      </div>
+      <div class="modal-right">
+        <h2 id="modal-name"></h2>
+        <p id="modal-price"></p>
+        <p id="modal-description"></p>
+        <div id="modal-sizes-area" style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <button id="modal-add-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Swish Drip Store</h3>
+        <p>Premium streetwear and thrift clothing</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="view-brand.html">Brand Collection</a></li>
+          <li><a href="view-thrift.html">Thrift Collection</a></li>
+          <li><a href="view-sale.html">Sale Items</a></li>
+          <li><a href="blog.html">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Connect</h3>
+        <p>Email: info@swishdrip.com</p>
+        <p>Phone: (123) 456-7890</p>
+      </div>
+    </div>
+    <p class="copyright">&copy; 2025 Swish Drip Store. All rights reserved.</p>
+  </footer>
+
+
+  <script src="js/view-pages.js"></script>
+  <script>
+    // Initialize page-specific functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set active category
+      window.currentCategory = 'brand';
+      console.log('Brand page loaded');
+    });
+  </script>
+</body>
+</html>
