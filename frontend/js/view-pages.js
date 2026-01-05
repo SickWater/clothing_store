@@ -90,6 +90,9 @@ let viewPageFilters = {
   discount: 'all'
 };
 
+// Wishlist state
+let wishlist = JSON.parse(localStorage.getItem('swishdrip_wishlist')) || { items: [] };
+
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
   console.log(`${window.currentCategory || 'View'} page initialized`);
@@ -127,6 +130,7 @@ function updateAuthUI() {
   const loginBtn = document.getElementById('login-btn');
   const logoutBtn = document.getElementById('logout-btn');
   const userGreeting = document.getElementById('user-greeting');
+  const profileLink = document.getElementById('profile-link');
   
   if (currentUser && authToken) {
     if (loginBtn) loginBtn.style.display = "none";
@@ -135,6 +139,7 @@ function updateAuthUI() {
       userGreeting.textContent = `Hi, ${currentUser.name.split(' ')[0]}!`;
       userGreeting.style.display = "inline-block";
     }
+    if (profileLink) profileLink.style.display = "inline-block";
   } else {
     if (loginBtn) loginBtn.style.display = "inline-block";
     if (logoutBtn) logoutBtn.style.display = "none";
@@ -142,6 +147,7 @@ function updateAuthUI() {
       userGreeting.textContent = "";
       userGreeting.style.display = "none";
     }
+    if (profileLink) profileLink.style.display = "none";
   }
 }
 
@@ -526,6 +532,74 @@ function clearAllFilters() {
   applyFilters();
 }
 
+// ==================== WISHLIST FUNCTIONS ====================
+function addWishlistHeartToProductHTML(productId, isInWishlist) {
+  return `
+    <button class="product-heart ${isInWishlist ? 'active' : ''}" 
+            data-product-id="${productId}"
+            onclick="toggleWishlist('${productId}', event)"
+            title="${isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}"
+            style="position: absolute; top: 10px; right: 10px; background: rgba(255, 255, 255, 0.9); border: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; transition: all 0.2s ease; z-index: 2;">
+      ${isInWishlist ? '❤️' : '🤍'}
+    </button>
+  `;
+}
+
+async function toggleWishlist(productId, event) {
+  event.stopPropagation();
+  event.preventDefault();
+  
+  // Check if user is authenticated
+  const currentUser = JSON.parse(localStorage.getItem('user_data')) || null;
+  const authToken = localStorage.getItem('auth_token') || null;
+  
+  if (!currentUser || !authToken) {
+    // Show auth modal
+    const authModal = document.getElementById('auth-modal');
+    if (authModal) {
+      authModal.style.display = 'flex';
+      showLoginForm();
+      const authMessage = document.getElementById('auth-message');
+      if (authMessage) {
+        authMessage.textContent = "Please login to manage your wishlist";
+        authMessage.className = "info";
+        authMessage.style.display = "block";
+      }
+    }
+    return false;
+  }
+  
+  const index = wishlist.items.indexOf(productId);
+  
+  if (index === -1) {
+    // Add to wishlist
+    wishlist.items.push(productId);
+    localStorage.setItem('swishdrip_wishlist', JSON.stringify(wishlist));
+    toast('Added to wishlist!');
+    
+    // Update the heart button
+    const heartBtn = event.target;
+    heartBtn.classList.add('active');
+    heartBtn.innerHTML = '❤️';
+    heartBtn.title = 'Remove from wishlist';
+    heartBtn.style.background = 'rgba(229, 57, 53, 0.1)';
+    return true;
+  } else {
+    // Remove from wishlist
+    wishlist.items.splice(index, 1);
+    localStorage.setItem('swishdrip_wishlist', JSON.stringify(wishlist));
+    toast('Removed from wishlist');
+    
+    // Update the heart button
+    const heartBtn = event.target;
+    heartBtn.classList.remove('active');
+    heartBtn.innerHTML = '🤍';
+    heartBtn.title = 'Add to wishlist';
+    heartBtn.style.background = 'rgba(255, 255, 255, 0.9)';
+    return false;
+  }
+}
+
 // ==================== RENDERING FUNCTIONS ====================
 function updateResultsCount() {
   const resultsCount = document.getElementById('results-count');
@@ -624,11 +698,15 @@ function createProductCardHTML(product) {
     sizeChipsHTML += '</div>';
   }
   
+  // Check if product is in wishlist
+  const isInWishlist = wishlist.items.includes(product._id || product.id);
+  
   return `
     <div class="product" data-id="${product._id || product.id}">
       <div style="position:relative;">
         ${discountBadge}
         ${isOutOfStock ? '<div class="out-of-stock-badge">OUT OF STOCK</div>' : ''}
+        ${addWishlistHeartToProductHTML(product._id || product.id, isInWishlist)}
         <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(product.name)}"
              style="width:100%;height:200px;object-fit:cover;border-radius:8px;"
              onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
@@ -656,22 +734,6 @@ function createProductCardHTML(product) {
       </div>
     </div>
   `;
-
-  // Add this function in view-pages.js
-function addWishlistHeartToProductHTML(productId, isInWishlist) {
-  return `
-    <button class="product-heart ${isInWishlist ? 'active' : ''}" 
-            data-product-id="${productId}"
-            onclick="toggleWishlist('${productId}', event)"
-            title="${isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}">
-      ${isInWishlist ? '❤️' : '🤍'}
-    </button>
-  `;
-}
-
-// Then modify the createProductCardHTML function to include the heart:
-// In the return statement, add this inside the position:relative div:
-// ${addWishlistHeartToProductHTML(product._id || product.id, isInWishlist)}
 }
 
 function addProductCardListeners() {
@@ -1010,6 +1072,8 @@ function setupAuthListeners() {
       if (confirm("Are you sure you want to logout?")) {
         localStorage.removeItem('auth_token');
         localStorage.removeItem('user_data');
+        localStorage.removeItem('swishdrip_wishlist');
+        wishlist = { items: [] };
         updateAuthUI();
         toast("Logged out successfully");
       }

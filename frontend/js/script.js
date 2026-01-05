@@ -71,11 +71,15 @@ let currentUser = JSON.parse(localStorage.getItem("user_data")) || null;
 let authToken = localStorage.getItem("auth_token") || null;
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+// ---------- Wishlist State ----------
+let wishlist = JSON.parse(localStorage.getItem('swishdrip_wishlist')) || { items: [] };
+
 // Update UI based on auth state
 function updateAuthUI() {
   const loginBtn = qs("#login-btn");
   const logoutBtn = qs("#logout-btn");
   const userGreeting = qs("#user-greeting");
+  const profileLink = document.getElementById('profile-link');
   
   if (currentUser && authToken) {
     // User is logged in
@@ -85,6 +89,7 @@ function updateAuthUI() {
       userGreeting.textContent = `Hi, ${currentUser.name.split(' ')[0]}!`;
       userGreeting.style.display = "inline-block";
     }
+    if (profileLink) profileLink.style.display = "inline-block";
   } else {
     // User is not logged in
     if (loginBtn) loginBtn.style.display = "inline-block";
@@ -93,6 +98,7 @@ function updateAuthUI() {
       userGreeting.textContent = "";
       userGreeting.style.display = "none";
     }
+    if (profileLink) profileLink.style.display = "none";
   }
 }
 
@@ -491,6 +497,105 @@ function renderSaleGrid() {
   saleItems.forEach(p => saleGrid.appendChild(createProductCard(p)));
 }
 
+// ---------- Wishlist Heart Icons ----------
+function addWishlistHeartToProduct(product, div) {
+  // Check if product is in wishlist
+  const isInWishlist = wishlist.items.includes(product._id || product.id);
+  
+  // Create heart button
+  const heartBtn = document.createElement('button');
+  heartBtn.className = `product-heart ${isInWishlist ? 'active' : ''}`;
+  heartBtn.innerHTML = isInWishlist ? '❤️' : '🤍';
+  heartBtn.setAttribute('data-product-id', product._id || product.id);
+  heartBtn.title = isInWishlist ? 'Remove from wishlist' : 'Add to wishlist';
+  
+  // Position it
+  heartBtn.style.cssText = `
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    z-index: 2;
+  `;
+  
+  // Add hover effects
+  heartBtn.addEventListener('mouseenter', () => {
+    if (!isInWishlist) {
+      heartBtn.style.transform = 'scale(1.1)';
+    }
+  });
+  
+  heartBtn.addEventListener('mouseleave', () => {
+    if (!isInWishlist) {
+      heartBtn.style.transform = 'scale(1)';
+    }
+  });
+  
+  // Add click event
+  heartBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Toggle wishlist
+    const wasAdded = await toggleWishlist(product._id || product.id, product);
+    
+    // Update button state
+    if (wasAdded) {
+      heartBtn.classList.add('active');
+      heartBtn.innerHTML = '❤️';
+      heartBtn.title = 'Remove from wishlist';
+      heartBtn.style.background = 'rgba(229, 57, 53, 0.1)';
+    } else {
+      heartBtn.classList.remove('active');
+      heartBtn.innerHTML = '🤍';
+      heartBtn.title = 'Add to wishlist';
+      heartBtn.style.background = 'rgba(255, 255, 255, 0.9)';
+    }
+  });
+  
+  // Add to product card
+  const productImageContainer = div.querySelector('div[style*="position:relative"]');
+  if (productImageContainer) {
+    productImageContainer.appendChild(heartBtn);
+  }
+}
+
+// ---------- Wishlist Functions ----------
+async function toggleWishlist(productId, productData = null) {
+  // Check if user is authenticated
+  if (!isAuthenticated()) {
+    showAuthModal();
+    showAuthMessage("info", "Please login to manage your wishlist");
+    return false;
+  }
+  
+  const index = wishlist.items.indexOf(productId);
+  
+  if (index === -1) {
+    // Add to wishlist
+    wishlist.items.push(productId);
+    localStorage.setItem('swishdrip_wishlist', JSON.stringify(wishlist));
+    toast('Added to wishlist!');
+    return true;
+  } else {
+    // Remove from wishlist
+    wishlist.items.splice(index, 1);
+    localStorage.setItem('swishdrip_wishlist', JSON.stringify(wishlist));
+    toast('Removed from wishlist');
+    return false;
+  }
+}
+
 // ---------- Product card ----------
 function createProductCard(product, showCategory = false) {
   const div = document.createElement("div");
@@ -545,6 +650,9 @@ function createProductCard(product, showCategory = false) {
     </div>
   `;
 
+  // Add wishlist heart to product
+  addWishlistHeartToProduct(product, div);
+
   div.querySelector(".view-btn")?.addEventListener("click", () => openModal(product));
   
   div.querySelector(".add-btn")?.addEventListener("click", () => {
@@ -572,9 +680,6 @@ function createProductCard(product, showCategory = false) {
   return div;
 }
 
-
-
-
 // ---------- Update Product Stock ----------
 async function updateProductStock(productId, size, quantity) {
   try {
@@ -593,7 +698,6 @@ async function updateProductStock(productId, size, quantity) {
     // You might want to handle this gracefully
   }
 }
-
 
 // ---------- Modal ----------
 function openModal(product) {
@@ -1322,4 +1426,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // Load products and render cart
   fetchProducts();
   renderCartEditor();
-})
+});
