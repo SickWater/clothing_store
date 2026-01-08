@@ -28,49 +28,214 @@
       </div>
     </header>
     
+    <!-- SKELETON STATS -->
+    <div class="stats-grid" id="skeletonStats" style="display: none;">
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+    </div>
+    
+    <!-- ACTUAL STATS (will be populated by JS) -->
+    <div class="stats-grid" id="statsContainer"></div>
+
     <!-- ADMIN SEARCH AND FILTERS -->
     <div class="admin-controls">
-      <div class="search-box">
-        <input type="text" id="productSearch" placeholder="🔍 Search products by name..." autocomplete="off">
+      <!-- Skeleton for search and filters -->
+      <div id="skeletonControls" style="display: none;">
+        <div class="skeleton skeleton-search"></div>
+        <div class="filter-controls">
+          <div class="skeleton skeleton-filter"></div>
+          <div class="skeleton skeleton-filter"></div>
+          <div class="skeleton skeleton-filter"></div>
+          <div class="skeleton skeleton-filter" style="width: 100px;"></div>
+        </div>
       </div>
       
-      <div class="filter-controls">
-        <div class="filter-group">
-          <select id="categoryFilter" class="filter-select">
-            <option value="">All Categories</option>
-            <option value="brand">🏷️ Brand</option>
-            <option value="thrift">🔄 Thrift</option>
-          </select>
+      <!-- Actual controls -->
+      <div id="actualControls">
+        <div class="search-box">
+          <input type="text" id="productSearch" placeholder="🔍 Search products by name..." autocomplete="off">
         </div>
         
-        <div class="filter-group">
-          <select id="saleFilter" class="filter-select">
-            <option value="">All Products</option>
-            <option value="on_sale">On Sale</option>
-            <option value="not_on_sale">Not on Sale</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <select id="sortFilter" class="filter-select">
-            <option value="newest">Newest First</option>
-            <option value="oldest">Oldest First</option>
-            <option value="price_high">Price: High to Low</option>
-            <option value="price_low">Price: Low to High</option>
-            <option value="stock_high">Stock: High to Low</option>
-            <option value="stock_low">Stock: Low to High</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <button id="clearFilters" class="btn small secondary">Clear All</button>
+        <div class="filter-controls">
+          <div class="filter-group">
+            <select id="categoryFilter" class="filter-select">
+              <option value="">All Categories</option>
+              <option value="brand">🏷️ Brand</option>
+              <option value="thrift">🔄 Thrift</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <select id="saleFilter" class="filter-select">
+              <option value="">All Products</option>
+              <option value="on_sale">On Sale</option>
+              <option value="not_on_sale">Not on Sale</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <select id="sortFilter" class="filter-select">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="price_high">Price: High to Low</option>
+              <option value="price_low">Price: Low to High</option>
+              <option value="stock_high">Stock: High to Low</option>
+              <option value="stock_low">Stock: Low to High</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <button id="clearFilters" class="btn small secondary">Clear All</button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- TABLE -->
     <section class="table-wrap">
-      <table class="table">
+      <!-- Skeleton Table -->
+      <div id="skeletonTable" style="display: none;">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Price</th>
+              <th>Sale?</th>
+              <th>Sale Price</th>
+              <th>Stock by Size</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Skeleton Rows -->
+            <tr class="table-skeleton-row">
+              <td><div class="skeleton skeleton-image"></div></td>
+              <td>
+                <div class="skeleton skeleton-cell"></div>
+                <div class="skeleton skeleton-cell" style="width: 60%;"></div>
+              </td>
+              <td><div class="skeleton skeleton-badge"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 80px;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 20px; margin: 0 auto;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 120px;"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 100px;"></div></td>
+              <td>
+                <div class="action-buttons">
+                  <div class="skeleton skeleton-button"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-skeleton-row">
+              <td><div class="skeleton skeleton-image"></div></td>
+              <td>
+                <div class="skeleton skeleton-cell"></div>
+                <div class="skeleton skeleton-cell" style="width: 70%;"></div>
+              </td>
+              <td><div class="skeleton skeleton-badge"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 80px;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 20px; margin: 0 auto;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 120px;"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 100px;"></div></td>
+              <td>
+                <div class="action-buttons">
+                  <div class="skeleton skeleton-button"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-skeleton-row">
+              <td><div class="skeleton skeleton-image"></div></td>
+              <td>
+                <div class="skeleton skeleton-cell"></div>
+                <div class="skeleton skeleton-cell" style="width: 65%;"></div>
+              </td>
+              <td><div class="skeleton skeleton-badge"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 80px;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 20px; margin: 0 auto;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 120px;"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 100px;"></div></td>
+              <td>
+                <div class="action-buttons">
+                  <div class="skeleton skeleton-button"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-skeleton-row">
+              <td><div class="skeleton skeleton-image"></div></td>
+              <td>
+                <div class="skeleton skeleton-cell"></div>
+                <div class="skeleton skeleton-cell" style="width: 75%;"></div>
+              </td>
+              <td><div class="skeleton skeleton-badge"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 80px;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 20px; margin: 0 auto;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 120px;"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 100px;"></div></td>
+              <td>
+                <div class="action-buttons">
+                  <div class="skeleton skeleton-button"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-skeleton-row">
+              <td><div class="skeleton skeleton-image"></div></td>
+              <td>
+                <div class="skeleton skeleton-cell"></div>
+                <div class="skeleton skeleton-cell" style="width: 60%;"></div>
+              </td>
+              <td><div class="skeleton skeleton-badge"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 80px;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 20px; margin: 0 auto;"></div></td>
+              <td><div class="skeleton skeleton-price"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 120px;"></div></td>
+              <td><div class="skeleton skeleton-cell" style="width: 100px;"></div></td>
+              <td>
+                <div class="action-buttons">
+                  <div class="skeleton skeleton-button"></div>
+                  <div class="skeleton skeleton-button"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Actual Table -->
+      <table class="table" id="actualTable" style="display: none;">
         <thead>
           <tr>
             <th>Image</th>
@@ -472,6 +637,112 @@
   </div>
 
   <script src="../js/admin/admin.js"></script>
+  
+  <!-- Skeleton Loader Script -->
+  <script>
+    // Show skeleton loaders on initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const skeletonStats = document.getElementById('skeletonStats');
+      const skeletonControls = document.getElementById('skeletonControls');
+      const skeletonTable = document.getElementById('skeletonTable');
+      const actualControls = document.getElementById('actualControls');
+      const actualTable = document.getElementById('actualTable');
+      const statsContainer = document.getElementById('statsContainer');
+      
+      // Show skeletons
+      if (skeletonStats) skeletonStats.style.display = 'grid';
+      if (skeletonControls) skeletonControls.style.display = 'block';
+      if (skeletonTable) skeletonTable.style.display = 'block';
+      
+      // Hide actual content initially
+      if (actualControls) actualControls.style.display = 'none';
+      if (actualTable) actualTable.style.display = 'none';
+      if (statsContainer) statsContainer.style.display = 'none';
+      
+      // Check if user is authenticated
+      const token = localStorage.getItem('admin_token');
+      if (!token) {
+        window.location.href = 'admin-login.html';
+        return;
+      }
+      
+      // Show content after a brief delay (simulating loading)
+      setTimeout(() => {
+        if (skeletonStats) skeletonStats.style.display = 'none';
+        if (skeletonControls) skeletonControls.style.display = 'none';
+        if (skeletonTable) skeletonTable.style.display = 'none';
+        
+        if (actualControls) actualControls.style.display = 'block';
+        if (actualTable) actualTable.style.display = 'table';
+        if (statsContainer) statsContainer.style.display = 'grid';
+      }, 800);
+    });
+    
+    // Function to show skeleton during refresh
+    function showSkeletonDuringRefresh() {
+      const skeletonStats = document.getElementById('skeletonStats');
+      const skeletonTable = document.getElementById('skeletonTable');
+      const actualTable = document.getElementById('actualTable');
+      const statsContainer = document.getElementById('statsContainer');
+      const emptyMsg = document.getElementById('emptyMsg');
+      
+      if (emptyMsg) emptyMsg.style.display = 'none';
+      if (actualTable) actualTable.style.display = 'none';
+      if (statsContainer) statsContainer.style.display = 'none';
+      
+      if (skeletonStats) skeletonStats.style.display = 'grid';
+      if (skeletonTable) skeletonTable.style.display = 'block';
+    }
+    
+    // Override the refresh function to show skeleton
+    const originalRefreshBtn = document.getElementById('refreshBtn');
+    if (originalRefreshBtn) {
+      originalRefreshBtn.addEventListener('click', () => {
+        showSkeletonDuringRefresh();
+        
+        // Call the original loadProducts function after a brief delay
+        setTimeout(() => {
+          if (window.loadProducts) {
+            window.loadProducts();
+          }
+        }, 300);
+      });
+    }
+    
+    // Override the logout function to show skeleton
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          // Show loading skeleton
+          document.body.innerHTML = `
+            <div style="
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: linear-gradient(135deg, #111 0%, #333 100%);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              color: white;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            ">
+              <div class="skeleton-spinner" style="margin-bottom: 20px;"></div>
+              <p>Logging out...</p>
+            </div>
+          `;
+          
+          setTimeout(() => {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+          }, 500);
+        }
+      });
+    }
+  </script>
 </body>
-
 </html>

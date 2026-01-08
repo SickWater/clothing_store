@@ -69,16 +69,32 @@ function showToast(message, type = 'info', duration = 3000) {
   return toast;
 }
 
-function showLoading(show = true) {
-  const loadingIndicator = document.getElementById('loadingIndicator');
-  const ordersList = document.getElementById('ordersList');
+// Show skeleton loaders for orders
+function showOrderSkeleton(show = true) {
+  const skeletonStats = document.getElementById('skeletonOrderStats');
+  const skeletonFilters = document.getElementById('skeletonOrderFilters');
+  const skeletonOrders = document.getElementById('skeletonOrdersList');
+  const actualFilters = document.getElementById('actualOrderFilters');
+  const actualOrders = document.getElementById('ordersList');
+  const orderStats = document.getElementById('orderStats');
+  const emptyState = document.getElementById('emptyState');
   
-  if (loadingIndicator) {
-    loadingIndicator.style.display = show ? 'block' : 'none';
-  }
-  
-  if (ordersList) {
-    ordersList.style.opacity = show ? '0.5' : '1';
+  if (show) {
+    if (skeletonStats) skeletonStats.style.display = 'grid';
+    if (skeletonFilters) skeletonFilters.style.display = 'flex';
+    if (skeletonOrders) skeletonOrders.style.display = 'block';
+    
+    if (actualFilters) actualFilters.style.display = 'none';
+    if (actualOrders) actualOrders.style.display = 'none';
+    if (orderStats) orderStats.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'none';
+  } else {
+    if (skeletonStats) skeletonStats.style.display = 'none';
+    if (skeletonFilters) skeletonFilters.style.display = 'none';
+    if (skeletonOrders) skeletonOrders.style.display = 'none';
+    
+    if (actualFilters) actualFilters.style.display = 'flex';
+    if (orderStats) orderStats.style.display = 'grid';
   }
 }
 
@@ -114,7 +130,7 @@ function getStatusBadge(status) {
 async function loadOrders() {
   if (!requireAuth()) return;
   
-  showLoading(true);
+  // Skeleton already shown by HTML script
   
   try {
     const response = await fetch(`${API_BASE}/api/orders`, {
@@ -131,18 +147,40 @@ async function loadOrders() {
     renderOrders();
     updateStats();
     
+    // Hide skeleton and show actual content
+    showOrderSkeleton(false);
+    
+    // Dispatch event to notify skeleton script
+    document.dispatchEvent(new Event('ordersLoaded'));
+    
     showToast(`Loaded ${orders.length} orders`, 'success', 2000);
     
   } catch (error) {
     console.error('Error loading orders:', error);
     showToast(`Failed to load orders: ${error.message}`, 'error');
-  } finally {
-    showLoading(false);
+    
+    // Hide skeleton on error
+    showOrderSkeleton(false);
   }
 }
 
 async function markAsDelivered(orderId) {
   if (!confirm('Mark this order as delivered?')) return;
+  
+  // Show loading state
+  const orderCard = document.getElementById(`order-${orderId}`);
+  if (orderCard) {
+    const originalContent = orderCard.innerHTML;
+    orderCard.innerHTML = `
+      <div class="skeleton-overlay">
+        <div class="skeleton-overlay-content">
+          <div class="skeleton-spinner" style="width: 24px; height: 24px; margin-bottom: 8px;"></div>
+          <p style="font-size: 14px;">Updating...</p>
+        </div>
+      </div>
+      ${originalContent}
+    `;
+  }
   
   try {
     const response = await fetch(`${API_BASE}/api/orders/${orderId}/deliver`, {
@@ -152,7 +190,12 @@ async function markAsDelivered(orderId) {
     
     if (response.ok) {
       showToast('Order marked as delivered!', 'success');
-      loadOrders(); // Refresh the list
+      
+      // Refresh the list with skeleton
+      showOrderSkeleton(true);
+      setTimeout(() => {
+        loadOrders();
+      }, 300);
     } else {
       const data = await response.json();
       throw new Error(data.message || 'Failed to update order');
@@ -160,6 +203,12 @@ async function markAsDelivered(orderId) {
   } catch (error) {
     console.error('Error updating order:', error);
     showToast(`Failed to update order: ${error.message}`, 'error');
+    
+    // Restore original content on error
+    if (orderCard) {
+      const overlay = orderCard.querySelector('.skeleton-overlay');
+      if (overlay) overlay.remove();
+    }
   }
 }
 
@@ -169,6 +218,19 @@ async function viewOrderDetails(orderId) {
     if (!order) return;
     
     currentOrderId = orderId;
+    
+    // Show loading in modal
+    const modalContent = document.getElementById('orderDetailsContent');
+    modalContent.innerHTML = `
+      <div class="skeleton-overlay" style="min-height: 400px;">
+        <div class="skeleton-overlay-content">
+          <div class="skeleton-spinner"></div>
+          <p>Loading order details...</p>
+        </div>
+      </div>
+    `;
+    
+    document.getElementById('orderDetailsModal').style.display = 'flex';
     
     // Format order items HTML
     const itemsHtml = order.items.map(item => `
@@ -188,7 +250,7 @@ async function viewOrderDetails(orderId) {
     `).join('');
     
     // Format modal content
-    const modalContent = `
+    const modalHtml = `
       <div class="order-header">
         <div>
           <div class="order-id">Order #${order._id.substring(18, 24).toUpperCase()}</div>
@@ -225,8 +287,10 @@ async function viewOrderDetails(orderId) {
       </div>
     `;
     
-    document.getElementById('orderDetailsContent').innerHTML = modalContent;
-    document.getElementById('orderDetailsModal').style.display = 'flex';
+    // Simulate loading delay
+    setTimeout(() => {
+      modalContent.innerHTML = modalHtml;
+    }, 500);
     
   } catch (error) {
     console.error('Error loading order details:', error);
@@ -235,6 +299,20 @@ async function viewOrderDetails(orderId) {
 }
 
 function markAsDeliveredFromModal(orderId) {
+  // Show loading in modal
+  const modalContent = document.getElementById('orderDetailsContent');
+  const originalContent = modalContent.innerHTML;
+  
+  modalContent.innerHTML = `
+    <div class="skeleton-overlay">
+      <div class="skeleton-overlay-content">
+        <div class="skeleton-spinner"></div>
+        <p>Updating order...</p>
+      </div>
+    </div>
+    ${originalContent}
+  `;
+  
   markAsDelivered(orderId);
   closeOrderModal();
 }
@@ -248,82 +326,94 @@ function printOrder(orderId) {
   const order = orders.find(o => o._id === orderId);
   if (!order) return;
   
-  const printWindow = window.open('', '_blank');
-  printWindow.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>Order Receipt - ${order._id.substring(18, 24).toUpperCase()}</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
-        .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
-        .header h1 { margin: 0; color: #0b6ff2; }
-        .info { margin: 20px 0; }
-        .info p { margin: 5px 0; }
-        .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .items-table th { background: #f8f9fa; padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6; }
-        .items-table td { padding: 10px; border-bottom: 1px solid #dee2e6; }
-        .total { text-align: right; font-size: 18px; font-weight: bold; margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
-        .footer { margin-top: 40px; text-align: center; color: #666; font-size: 12px; }
-      </style>
-    </head>
-    <body>
-      <div class="header">
-        <h1>Swish Drip</h1>
-        <p>Order Receipt</p>
-      </div>
-      
-      <div class="info">
-        <p><strong>Order ID:</strong> ${order._id.substring(18, 24).toUpperCase()}</p>
-        <p><strong>Date:</strong> ${formatDate(order.createdAt)}</p>
-        <p><strong>Customer:</strong> ${order.customerName}</p>
-        <p><strong>Phone:</strong> ${order.phone}</p>
-        <p><strong>Location:</strong> ${order.location}</p>
-        <p><strong>Status:</strong> ${order.status.toUpperCase()}</p>
-      </div>
-      
-      <table class="items-table">
-        <thead>
-          <tr>
-            <th>Item</th>
-            <th>Size</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Subtotal</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${order.items.map(item => `
-            <tr>
-              <td>${item.name}</td>
-              <td>${item.size || 'N/A'}</td>
-              <td>${item.quantity}</td>
-              <td>${formatPrice(item.price)}</td>
-              <td>${formatPrice(item.price * item.quantity)}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-      
-      <div class="total">
-        Total: ${formatPrice(order.total)}
-      </div>
-      
-      <div class="footer">
-        <p>Thank you for your order!</p>
-        <p>Swish Drip Clothing Store</p>
-        <p>Generated on ${new Date().toLocaleDateString()}</p>
-      </div>
-    </body>
-    </html>
-  `);
+  // Show printing indicator
+  const toast = showToast('Preparing print...', 'info');
   
-  printWindow.document.close();
-  printWindow.focus();
   setTimeout(() => {
-    printWindow.print();
-    printWindow.close();
-  }, 250);
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Order Receipt - ${order._id.substring(18, 24).toUpperCase()}</title>
+        <style>
+          body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+          .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+          .header h1 { margin: 0; color: #0b6ff2; }
+          .info { margin: 20px 0; }
+          .info p { margin: 5px 0; }
+          .items-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+          .items-table th { background: #f8f9fa; padding: 10px; text-align: left; border-bottom: 2px solid #dee2e6; }
+          .items-table td { padding: 10px; border-bottom: 1px solid #dee2e6; }
+          .total { text-align: right; font-size: 18px; font-weight: bold; margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
+          .footer { margin-top: 40px; text-align: center; color: #666; font-size: 12px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>Swish Drip</h1>
+          <p>Order Receipt</p>
+        </div>
+        
+        <div class="info">
+          <p><strong>Order ID:</strong> ${order._id.substring(18, 24).toUpperCase()}</p>
+          <p><strong>Date:</strong> ${formatDate(order.createdAt)}</p>
+          <p><strong>Customer:</strong> ${order.customerName}</p>
+          <p><strong>Phone:</strong> ${order.phone}</p>
+          <p><strong>Location:</strong> ${order.location}</p>
+          <p><strong>Status:</strong> ${order.status.toUpperCase()}</p>
+        </div>
+        
+        <table class="items-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Size</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${order.items.map(item => `
+              <tr>
+                <td>${item.name}</td>
+                <td>${item.size || 'N/A'}</td>
+                <td>${item.quantity}</td>
+                <td>${formatPrice(item.price)}</td>
+                <td>${formatPrice(item.price * item.quantity)}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+        
+        <div class="total">
+          Total: ${formatPrice(order.total)}
+        </div>
+        
+        <div class="footer">
+          <p>Thank you for your order!</p>
+          <p>Swish Drip Clothing Store</p>
+          <p>Generated on ${new Date().toLocaleDateString()}</p>
+        </div>
+      </body>
+      </html>
+    `);
+    
+    printWindow.document.close();
+    printWindow.focus();
+    
+    // Update toast
+    if (toast) {
+      toast.textContent = 'Print dialog opening...';
+    }
+    
+    setTimeout(() => {
+      printWindow.print();
+      printWindow.close();
+      showToast('Print dialog opened', 'success');
+    }, 250);
+  }, 300);
 }
 
 // ==================== FILTERING & SEARCH ====================
@@ -480,14 +570,42 @@ function updateStats() {
 
 function setupEventListeners() {
   // Refresh button
-  document.getElementById('refreshBtn')?.addEventListener('click', loadOrders);
+  document.getElementById('refreshBtn')?.addEventListener('click', () => {
+    showOrderSkeleton(true);
+    setTimeout(() => {
+      loadOrders();
+    }, 300);
+  });
   
   // Logout button - FIXED PATH
   document.getElementById('logoutBtn')?.addEventListener('click', () => {
     if (confirm('Are you sure you want to logout?')) {
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
-      window.location.href = '../admin/admin-login.html';
+      // Show loading skeleton
+      document.body.innerHTML = `
+        <div style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(135deg, #111 0%, #333 100%);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          color: white;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        ">
+          <div class="skeleton-spinner" style="margin-bottom: 20px;"></div>
+          <p>Logging out...</p>
+        </div>
+      `;
+      
+      setTimeout(() => {
+        localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
+        window.location.href = '../admin/admin-login.html';
+      }, 500);
     }
   });
   
@@ -514,7 +632,10 @@ function setupEventListeners() {
     }
     if (e.key === 'r' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      loadOrders();
+      showOrderSkeleton(true);
+      setTimeout(() => {
+        loadOrders();
+      }, 300);
     }
   });
 }
@@ -546,7 +667,7 @@ async function initializeOrders() {
   // Setup event listeners
   setupEventListeners();
   
-  // Load initial data
+  // Load initial data (skeleton already shown by HTML)
   await loadOrders();
   
   console.log('✅ Order Management initialized');

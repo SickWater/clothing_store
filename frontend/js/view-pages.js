@@ -1,4 +1,4 @@
-// js/view-pages.js - Complete Fixed Version
+// js/view-pages.js - Complete Fixed Version with Skeleton Loaders
 // This file is self-contained and doesn't depend on script.js
 
 const API_BASE = "http://localhost:5000";
@@ -71,6 +71,82 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+// ==================== SKELETON LOADER FUNCTIONS ====================
+function showSkeletonLoader(show) {
+  const skeletonLoader = document.getElementById('skeleton-loader');
+  const productGrid = document.getElementById('product-grid');
+  const loadingArea = document.getElementById('loading-area');
+  const sidebarSkeleton = document.getElementById('sidebar-skeleton');
+  const actualSidebar = document.getElementById('actual-sidebar');
+  
+  if (skeletonLoader) {
+    skeletonLoader.style.display = show ? 'grid' : 'none';
+  }
+  
+  if (productGrid) {
+    productGrid.style.display = show ? 'none' : 'grid';
+  }
+  
+  if (loadingArea) {
+    loadingArea.style.display = 'none';
+  }
+  
+  if (sidebarSkeleton && actualSidebar) {
+    if (show) {
+      sidebarSkeleton.style.display = 'block';
+      actualSidebar.style.display = 'none';
+    } else {
+      sidebarSkeleton.style.display = 'none';
+      actualSidebar.style.display = 'block';
+    }
+  }
+}
+
+function showSkeletonFilters(show) {
+  const shopControls = document.querySelector('.shop-controls');
+  if (!shopControls) return;
+  
+  const existingSkeleton = shopControls.querySelector('.filter-controls-skeleton');
+  const filterControls = shopControls.querySelector('.filter-controls');
+  
+  if (show) {
+    if (filterControls) {
+      filterControls.style.display = 'none';
+    }
+    
+    if (!existingSkeleton) {
+      const skeletonHTML = `
+        <div class="filter-controls-skeleton">
+          <div class="filter-group-skeleton">
+            <div class="skeleton skeleton-text label-placeholder"></div>
+            <div class="skeleton dropdown-placeholder"></div>
+          </div>
+          <div class="filter-group-skeleton">
+            <div class="skeleton skeleton-text label-placeholder"></div>
+            <div class="skeleton dropdown-placeholder"></div>
+          </div>
+          <div class="filter-group-skeleton">
+            <div class="skeleton skeleton-text label-placeholder"></div>
+            <div class="skeleton dropdown-placeholder"></div>
+          </div>
+          <div class="filter-group-skeleton">
+            <div class="skeleton skeleton-text label-placeholder"></div>
+            <div class="skeleton dropdown-placeholder"></div>
+          </div>
+        </div>
+      `;
+      shopControls.insertAdjacentHTML('beforeend', skeletonHTML);
+    }
+  } else {
+    if (existingSkeleton) {
+      existingSkeleton.remove();
+    }
+    if (filterControls) {
+      filterControls.style.display = 'flex';
+    }
+  }
 }
 
 // ==================== GLOBAL STATE ====================
@@ -154,7 +230,17 @@ function updateAuthUI() {
 // ==================== PRODUCT FETCHING ====================
 async function fetchProducts() {
   try {
-    showLoading(true, `Loading ${window.currentCategory || ''} items...`);
+    // Show skeleton loader instead of spinner
+    showSkeletonLoader(true);
+    
+    // Show skeleton filters
+    showSkeletonFilters(true);
+    
+    // Update results count skeleton
+    const resultsCount = document.getElementById('results-count');
+    if (resultsCount) {
+      resultsCount.innerHTML = '<span class="skeleton skeleton-text" style="width: 200px; display: inline-block;"></span>';
+    }
     
     const response = await fetch(`${API_BASE}/api/products`);
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -195,13 +281,28 @@ async function fetchProducts() {
     
     console.log(`Filtered to ${viewPageProducts.length} ${window.currentCategory} products`);
     
+    // Hide skeleton and show content
+    showSkeletonLoader(false);
+    showSkeletonFilters(false);
+    
     populateFilters();
     applyFilters();
-    showLoading(false);
     
   } catch (error) {
     console.error('Error loading products:', error);
-    showLoading(false, `Failed to load products: ${error.message}`);
+    
+    // Hide skeleton on error
+    showSkeletonLoader(false);
+    showSkeletonFilters(false);
+    
+    // Show error message in loading area
+    const loadingArea = document.getElementById('loading-area');
+    const loadingMessage = document.getElementById('loading-message');
+    if (loadingArea) loadingArea.style.display = 'block';
+    if (loadingMessage) {
+      loadingMessage.textContent = `Failed to load products: ${error.message}`;
+      loadingMessage.style.color = '#e74c3c';
+    }
     
     const retryBtn = document.getElementById('retry-btn');
     if (retryBtn) {
@@ -607,6 +708,8 @@ function updateResultsCount() {
     const categoryName = window.currentCategory === 'brand' ? 'Brand' : 
                        window.currentCategory === 'thrift' ? 'Thrift' : 'Sale';
     resultsCount.textContent = `${viewPageFilteredProducts.length} ${categoryName} items found`;
+    // Remove any skeleton HTML if present
+    resultsCount.innerHTML = resultsCount.textContent;
   }
   
   const activeFilters = document.getElementById('active-filters');
@@ -1244,19 +1347,20 @@ function setupEventListeners() {
 }
 
 function showLoading(show, message) {
-  const loadingArea = document.getElementById('loading-area');
-  const loadingSpinner = document.getElementById('loading-spinner');
-  const loadingMessage = document.getElementById('loading-message');
+  // This function is now only used for error states
+  // Skeleton loader is handled by showSkeletonLoader()
   
-  if (loadingArea) {
-    loadingArea.style.display = show ? 'block' : 'none';
-  }
-  
-  if (loadingSpinner) {
-    loadingSpinner.style.display = show ? 'block' : 'none';
-  }
-  
-  if (loadingMessage) {
-    loadingMessage.textContent = message || 'Loading...';
+  if (show) {
+    // Only show loading area for errors or retry states
+    const loadingArea = document.getElementById('loading-area');
+    const loadingMessage = document.getElementById('loading-message');
+    
+    if (loadingArea) {
+      loadingArea.style.display = 'block';
+    }
+    
+    if (loadingMessage) {
+      loadingMessage.textContent = message || 'Loading...';
+    }
   }
 }

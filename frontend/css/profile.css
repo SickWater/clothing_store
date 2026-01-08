@@ -521,3 +521,165 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Add these skeleton loader styles at the end of profile.css */
+
+/* ==================== SKELETON LOADERS ==================== */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: #e9ecef;
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.5) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Text skeletons */
+.skeleton-text {
+  height: 1em;
+  margin-bottom: 0.5em;
+  border-radius: 4px;
+}
+
+.skeleton-text:last-child {
+  margin-bottom: 0;
+}
+
+.skeleton-title {
+  height: 2rem;
+  width: 60%;
+  margin: 0 auto 1rem;
+  border-radius: 6px;
+}
+
+.skeleton-subtitle {
+  height: 1.2rem;
+  width: 40%;
+  margin: 0 auto 2rem;
+  border-radius: 4px;
+}
+
+/* Avatar skeleton */
+.skeleton-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #e9ecef;
+}
+
+/* Form skeletons */
+.skeleton-input {
+  height: 44px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.skeleton-button {
+  height: 44px;
+  width: 120px;
+  border-radius: 8px;
+}
+
+/* Order skeletons */
+.skeleton-order {
+  height: 150px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Wishlist skeletons */
+.skeleton-wishlist-item {
+  height: 200px;
+  border-radius: 8px;
+}
+
+/* Card skeletons */
+.skeleton-card {
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+}
+
+/* Navigation skeleton */
+.skeleton-nav-btn {
+  height: 44px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Specific skeleton layouts */
+.skeleton-profile-header {
+  padding: 60px 20px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.skeleton-nav-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding: 0 20px;
+  flex-wrap: wrap;
+}
+
+.skeleton-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.skeleton-form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.skeleton-form-group {
+  flex: 1;
+}
+
+.skeleton-wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+/* Hide skeleton when content is loaded */
+.skeleton-hidden {
+  display: none;
+}
+
+/* Loading states for existing elements */
+.loading .skeleton {
+  display: block;
+}
+
+.loading .skeleton-hidden {
+  display: none;
+}

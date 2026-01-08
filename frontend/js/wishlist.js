@@ -1,4 +1,4 @@
-// js/wishlist.js - Complete Wishlist System
+// js/wishlist.js - Complete Wishlist System with Skeleton Loaders
 const API_BASE = "http://localhost:5000";
 
 // ==================== WISHLIST STATE ====================
@@ -11,6 +11,9 @@ let wishlist = {
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Wishlist page initialized');
+  
+  // Show skeleton loaders immediately
+  showSkeletonLoaders();
   
   // Check for Google OAuth redirect
   const urlParams = new URLSearchParams(window.location.search);
@@ -34,6 +37,71 @@ document.addEventListener('DOMContentLoaded', function() {
   loadWishlist();
   setupWishlistListeners();
 });
+
+// ==================== SKELETON LOADER FUNCTIONS ====================
+function showSkeletonLoaders() {
+  const skeletonGrid = document.getElementById('skeleton-grid');
+  const wishlistGrid = document.getElementById('wishlist-grid');
+  
+  if (!skeletonGrid) return;
+  
+  // Hide the actual wishlist grid
+  if (wishlistGrid) {
+    wishlistGrid.style.display = 'none';
+  }
+  
+  // Show skeleton container
+  skeletonGrid.classList.add('loading');
+  
+  // Generate skeleton items (4 items for mobile, 6 for desktop)
+  const skeletonCount = window.innerWidth < 768 ? 4 : 6;
+  let skeletonHTML = '';
+  
+  for (let i = 0; i < skeletonCount; i++) {
+    skeletonHTML += `
+      <div class="skeleton-item">
+        <div class="skeleton-remove"></div>
+        <div class="skeleton-image"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-line long"></div>
+          <div class="skeleton-line short"></div>
+          <div class="skeleton-line medium"></div>
+          <div class="skeleton-actions">
+            <div class="skeleton-button"></div>
+            <div class="skeleton-button"></div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  skeletonGrid.innerHTML = skeletonHTML;
+}
+
+function hideSkeletonLoaders() {
+  const skeletonGrid = document.getElementById('skeleton-grid');
+  const wishlistGrid = document.getElementById('wishlist-grid');
+  
+  if (skeletonGrid) {
+    skeletonGrid.classList.remove('loading');
+  }
+  
+  if (wishlistGrid) {
+    wishlistGrid.style.display = 'grid';
+  }
+  
+  // Also update skeleton placeholders in sidebar
+  const skeletonCount = document.querySelector('.skeleton-count');
+  const skeletonStatus = document.querySelector('.skeleton-status');
+  
+  if (skeletonCount) {
+    skeletonCount.style.display = 'none';
+  }
+  
+  if (skeletonStatus) {
+    skeletonStatus.style.display = 'none';
+  }
+}
 
 // ==================== AUTH FUNCTIONS ====================
 function updateAuthUI() {
@@ -175,11 +243,19 @@ async function syncWishlist() {
   }
   
   try {
+    // Show loading state
+    const syncBtn = document.querySelector('.wishlist-actions .btn:nth-child(1)');
+    const originalText = syncBtn.textContent;
+    syncBtn.textContent = '🔄 Syncing...';
+    syncBtn.disabled = true;
+    
     // Get server wishlist
     const serverWishlist = await getServerWishlist();
     
     if (serverWishlist === null) {
       showToast("Failed to sync with server", "error");
+      syncBtn.textContent = originalText;
+      syncBtn.disabled = false;
       return;
     }
     
@@ -204,9 +280,20 @@ async function syncWishlist() {
     showToast("Wishlist synced successfully!", "success");
     loadWishlist();
     
+    // Restore button
+    syncBtn.textContent = originalText;
+    syncBtn.disabled = false;
+    
   } catch (error) {
     console.error("Error syncing wishlist:", error);
     showToast("Sync failed. Please try again.", "error");
+    
+    // Restore button even on error
+    const syncBtn = document.querySelector('.wishlist-actions .btn:nth-child(1)');
+    if (syncBtn) {
+      syncBtn.textContent = '🔄 Sync with Account';
+      syncBtn.disabled = false;
+    }
   }
 }
 
@@ -303,6 +390,9 @@ function clearWishlist() {
   if (wishlist.items.length === 0) return;
   
   if (confirm(`Are you sure you want to clear all ${wishlist.items.length} items from your wishlist?`)) {
+    // Show skeleton loader while clearing
+    showSkeletonLoaders();
+    
     // Clear server wishlist if logged in
     const currentUser = JSON.parse(localStorage.getItem('user_data')) || null;
     const authToken = localStorage.getItem('auth_token') || null;
@@ -319,12 +409,19 @@ function clearWishlist() {
     saveWishlistToLocal();
     
     showToast("Wishlist cleared", "success");
-    loadWishlist();
+    
+    // Small delay to show the skeleton briefly
+    setTimeout(() => {
+      loadWishlist();
+    }, 500);
   }
 }
 
 // ==================== WISHLIST PAGE FUNCTIONS ====================
 async function loadWishlist() {
+  // Show skeleton loaders while loading
+  showSkeletonLoaders();
+  
   // Load from localStorage
   loadWishlistFromLocal();
   
@@ -334,14 +431,19 @@ async function loadWishlist() {
   const wishlistCount = document.getElementById('wishlist-count');
   
   if (wishlist.items.length === 0) {
-    if (wishlistGrid) wishlistGrid.innerHTML = '';
-    if (emptyWishlist) emptyWishlist.style.display = 'block';
-    if (wishlistCount) wishlistCount.textContent = '0 items';
+    // Hide skeleton and show empty state after a brief delay
+    setTimeout(() => {
+      hideSkeletonLoaders();
+      if (wishlistGrid) wishlistGrid.innerHTML = '';
+      if (emptyWishlist) emptyWishlist.style.display = 'block';
+      if (wishlistCount) {
+        wishlistCount.innerHTML = '0 items';
+      }
+    }, 600);
     return;
   }
   
   if (emptyWishlist) emptyWishlist.style.display = 'none';
-  if (wishlistCount) wishlistCount.textContent = `${wishlist.items.length} item${wishlist.items.length !== 1 ? 's' : ''}`;
   
   try {
     // Fetch all products
@@ -355,11 +457,24 @@ async function loadWishlist() {
       wishlist.items.includes(product._id || product.id)
     );
     
-    if (wishlistGrid) {
-      renderWishlistItems(wishlistProducts);
-    }
+    // Small delay to ensure skeleton is visible
+    setTimeout(() => {
+      hideSkeletonLoaders();
+      
+      if (wishlistGrid) {
+        renderWishlistItems(wishlistProducts);
+      }
+      
+      if (wishlistCount) {
+        wishlistCount.innerHTML = `${wishlist.items.length} item${wishlist.items.length !== 1 ? 's' : ''}`;
+      }
+    }, 600);
+    
   } catch (error) {
     console.error("Error loading wishlist products:", error);
+    
+    // Hide skeleton on error
+    hideSkeletonLoaders();
     
     if (wishlistGrid) {
       wishlistGrid.innerHTML = `
@@ -368,6 +483,10 @@ async function loadWishlist() {
           <button class="btn" onclick="loadWishlist()">Retry</button>
         </div>
       `;
+    }
+    
+    if (wishlistCount) {
+      wishlistCount.innerHTML = 'Error loading';
     }
   }
 }

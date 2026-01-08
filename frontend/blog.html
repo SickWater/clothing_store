@@ -29,12 +29,12 @@
   </header>
 
   <main class="blog-page">
-    <!-- Page Header -->
-    <div class="page-header">
+    <!-- Page Header with Skeleton -->
+    <div class="page-header skeleton-loader">
       <div class="page-header-content">
-        <h1>Swish Drip Blog</h1>
-        <p class="page-subtitle">Streetwear insights, style tips & fashion news</p>
-        <div class="breadcrumb">
+        <h1 class="skeleton skeleton-text">Swish Drip Blog</h1>
+        <p class="page-subtitle skeleton skeleton-text">Streetwear insights, style tips & fashion news</p>
+        <div class="breadcrumb skeleton skeleton-text">
           <a href="index.html">Home</a> &gt; <span>Blog</span>
         </div>
       </div>
@@ -42,53 +42,126 @@
 
     <!-- Blog Content -->
     <div class="content-container">
-      <!-- Featured Article -->
-      <section class="featured-article" id="featured-article">
-        <div class="featured-image">
+      <!-- Featured Article with Skeleton -->
+      <section class="featured-article skeleton-loader">
+        <div class="featured-image skeleton">
           <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
                alt="Featured Article">
-          <div class="featured-badge">FEATURED</div>
+          <div class="featured-badge skeleton">FEATURED</div>
         </div>
         <div class="featured-content">
           <div class="article-meta">
-            <span class="category-badge fashion">Fashion</span>
-            <span class="date">March 15, 2024</span>
-            <span class="read-time">5 min read</span>
+            <span class="category-badge fashion skeleton skeleton-text">Fashion</span>
+            <span class="date skeleton skeleton-text">March 15, 2024</span>
+            <span class="read-time skeleton skeleton-text">5 min read</span>
           </div>
-          <h2><a href="blog-article.html?id=1">The Evolution of Streetwear: From Subculture to Mainstream</a></h2>
-          <p class="article-excerpt">Explore how streetwear transformed from underground subculture to dominating global fashion trends. Learn about key brands, cultural influences, and what's next for street fashion.</p>
-          <a href="blog-article.html?id=1" class="read-more">Read Full Article →</a>
+          <h2 class="skeleton skeleton-text skeleton-title">
+            <a href="blog-article.html?id=1">The Evolution of Streetwear: From Subculture to Mainstream</a>
+          </h2>
+          <p class="article-excerpt skeleton skeleton-text skeleton-excerpt">
+            Explore how streetwear transformed from underground subculture to dominating global fashion trends.
+          </p>
+          <p class="article-excerpt skeleton skeleton-text skeleton-excerpt short">
+            Learn about key brands and cultural influences.
+          </p>
+          <a href="blog-article.html?id=1" class="read-more skeleton skeleton-text skeleton-read-more">Read Full Article →</a>
         </div>
       </section>
 
-      <!-- Blog Categories -->
+      <!-- Blog Categories with Skeleton -->
       <div class="blog-categories">
         <h2>Browse by Category</h2>
-        <div class="category-filters">
-          <button class="category-btn active" data-category="all">All Articles</button>
-          <button class="category-btn" data-category="fashion">Fashion</button>
-          <button class="category-btn" data-category="style">Style Tips</button>
-          <button class="category-btn" data-category="sustainability">Sustainability</button>
-          <button class="category-btn" data-category="brands">Brand Spotlights</button>
-          <button class="category-btn" data-category="trends">Trends</button>
+        <div class="category-filters skeleton-loader">
+          <button class="category-btn active skeleton" data-category="all">All Articles</button>
+          <button class="category-btn skeleton" data-category="fashion">Fashion</button>
+          <button class="category-btn skeleton" data-category="style">Style Tips</button>
+          <button class="category-btn skeleton" data-category="sustainability">Sustainability</button>
+          <button class="category-btn skeleton" data-category="brands">Brand Spotlights</button>
+          <button class="category-btn skeleton" data-category="trends">Trends</button>
         </div>
       </div>
 
-      <!-- Articles Grid -->
+      <!-- Articles Grid with Skeleton -->
       <section class="articles-grid" id="articles-grid">
-        <!-- Article cards will be loaded here -->
+        <!-- Article Card 1 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge style skeleton skeleton-text">Style Tips</span>
+              <span class="date skeleton skeleton-text">March 14, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=2">5 Essential Streetwear Pieces Every Wardrobe Needs</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Discover the must-have items that form the foundation of a great streetwear collection.
+            </p>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text small">
+              From statement jackets to versatile sneakers.
+            </p>
+          </div>
+        </article>
+
+        <!-- Article Card 2 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge sustainability skeleton skeleton-text">Sustainability</span>
+              <span class="date skeleton skeleton-text">March 13, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=3">Sustainable Fashion: How Thrifting Reduces Environmental Impact</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Learn how buying second-hand clothing contributes to a more sustainable fashion industry.
+            </p>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text small">
+              Tips for finding quality thrift items.
+            </p>
+          </div>
+        </article>
+
+        <!-- Article Card 3 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge brands skeleton skeleton-text">Brands</span>
+              <span class="date skeleton skeleton-text">March 12, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=4">Brand Spotlight: The Rise of Independent Streetwear Labels</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Explore how small brands are making big waves in the streetwear scene with unique designs.
+            </p>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text small">
+              Supporting local fashion entrepreneurs.
+            </p>
+          </div>
+        </article>
       </section>
 
-      <!-- Newsletter -->
-      <section class="newsletter-section">
+      <!-- Newsletter with Skeleton -->
+      <section class="newsletter-section skeleton-loader">
         <div class="newsletter-content">
-          <h2>Stay Updated</h2>
-          <p>Subscribe to our newsletter for the latest streetwear news, style tips, and exclusive deals.</p>
+          <h2 class="skeleton skeleton-text">Stay Updated</h2>
+          <p class="skeleton skeleton-text">
+            Subscribe to our newsletter for the latest streetwear news, style tips, and exclusive deals.
+          </p>
           <form id="newsletter-form" class="newsletter-form">
-            <input type="email" placeholder="Your email address" required>
-            <button type="submit" class="btn primary">Subscribe</button>
+            <input type="email" placeholder="Your email address" required class="skeleton">
+            <button type="submit" class="btn primary skeleton">Subscribe</button>
           </form>
-          <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+          <p class="privacy-note skeleton skeleton-text">We respect your privacy. Unsubscribe at any time.</p>
         </div>
       </section>
     </div>
@@ -121,5 +194,32 @@
 
   <script src="js/script.js"></script>
   <script src="js/blog.js"></script>
+  <script>
+    // JavaScript to remove skeleton loaders when content is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulate content loading (remove this in production)
+      setTimeout(function() {
+        const skeletons = document.querySelectorAll('.skeleton-loader');
+        skeletons.forEach(skeleton => {
+          skeleton.classList.remove('skeleton-loader');
+          const skeletonTexts = skeleton.querySelectorAll('.skeleton-text');
+          skeletonTexts.forEach(text => {
+            text.classList.remove('skeleton', 'skeleton-text');
+          });
+          const skeletonElements = skeleton.querySelectorAll('.skeleton');
+          skeletonElements.forEach(el => {
+            if (!el.classList.contains('skeleton-text')) {
+              el.classList.remove('skeleton');
+            }
+          });
+        });
+        
+        // Remove specific skeleton classes
+        document.querySelectorAll('.skeleton-title, .skeleton-excerpt, .skeleton-meta, .skeleton-read-more, .skeleton-card-title, .skeleton-card-text, .skeleton-paragraph, .skeleton-heading, .skeleton-product-card').forEach(el => {
+          el.classList.remove('skeleton');
+        });
+      }, 2000); // 2 second delay for demonstration
+    });
+  </script>
 </body>
 </html>

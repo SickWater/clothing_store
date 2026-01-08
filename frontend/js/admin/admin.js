@@ -85,25 +85,24 @@ function showToast(message, type = 'info', duration = 3000) {
   return toast;
 }
 
-// Show loading overlay
-function showLoading(show = true, message = 'Loading...') {
-  let overlay = document.getElementById('loadingOverlay');
+// Show loading skeleton
+function showSkeleton(show = true) {
+  const skeletonStats = document.getElementById('skeletonStats');
+  const skeletonTable = document.getElementById('skeletonTable');
+  const actualTable = document.getElementById('actualTable');
+  const statsContainer = document.getElementById('statsContainer');
   
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'loadingOverlay';
-    overlay.className = 'loading-overlay';
-    document.body.appendChild(overlay);
+  if (show) {
+    if (skeletonStats) skeletonStats.style.display = 'grid';
+    if (skeletonTable) skeletonTable.style.display = 'block';
+    if (actualTable) actualTable.style.display = 'none';
+    if (statsContainer) statsContainer.style.display = 'none';
+  } else {
+    if (skeletonStats) skeletonStats.style.display = 'none';
+    if (skeletonTable) skeletonTable.style.display = 'none';
+    if (actualTable) actualTable.style.display = 'table';
+    if (statsContainer) statsContainer.style.display = 'grid';
   }
-  
-  overlay.innerHTML = `
-    <div style="text-align: center;">
-      <div class="spinner"></div>
-      <p style="margin-top: 10px; color: #666;">${message}</p>
-    </div>
-  `;
-  
-  overlay.style.display = show ? 'flex' : 'none';
 }
 
 // Format price
@@ -607,7 +606,21 @@ function openAddModal() {
 // Open edit product modal
 async function openEditModal(productId) {
   try {
-    showLoading(true, 'Loading product details...');
+    // Show loading state in modal
+    const modalContent = document.querySelector('#productModal .modal-content');
+    const originalContent = modalContent.innerHTML;
+    
+    modalContent.innerHTML = `
+      <div class="skeleton-overlay">
+        <div class="skeleton-overlay-content">
+          <div class="skeleton-spinner"></div>
+          <p>Loading product details...</p>
+        </div>
+      </div>
+      ${originalContent}
+    `;
+    
+    document.getElementById('productModal').style.display = 'flex';
     
     // Fetch product details
     const response = await fetch(`${API_BASE}/api/products/${productId}`, {
@@ -622,6 +635,10 @@ async function openEditModal(productId) {
     const product = data.product || data;
     
     currentProductId = productId;
+    
+    // Remove loading overlay
+    const overlay = modalContent.querySelector('.skeleton-overlay');
+    if (overlay) overlay.remove();
     
     // Set modal title
     document.getElementById('modalTitle').textContent = `Edit: ${product.name}`;
@@ -711,15 +728,10 @@ async function openEditModal(productId) {
     // Go to first step
     goToStep('1');
     
-    // Show modal
-    document.getElementById('productModal').style.display = 'flex';
-    
-    showLoading(false);
-    
   } catch (error) {
     console.error('Error loading product:', error);
     showToast(`Failed to load product: ${error.message}`, 'error');
-    showLoading(false);
+    closeProductModal();
   }
 }
 
@@ -732,7 +744,7 @@ async function saveProduct(event) {
     return;
   }
   
-  // Disable submit button
+  // Disable submit button and show loading
   const submitBtn = document.getElementById('submitProductBtn');
   const btnText = submitBtn.querySelector('.btn-text');
   const btnLoading = submitBtn.querySelector('.btn-loading');
@@ -741,6 +753,18 @@ async function saveProduct(event) {
   btnLoading.style.display = 'inline';
   submitBtn.disabled = true;
   
+  // Add loading overlay to modal
+  const modalContent = document.querySelector('#productModal .modal-content');
+  const loadingOverlay = document.createElement('div');
+  loadingOverlay.className = 'skeleton-overlay';
+  loadingOverlay.innerHTML = `
+    <div class="skeleton-overlay-content">
+      <div class="skeleton-spinner"></div>
+      <p>Saving product...</p>
+    </div>
+  `;
+  modalContent.appendChild(loadingOverlay);
+
   try {
     // Get form data
     const formData = new FormData();
@@ -845,10 +869,30 @@ async function saveProduct(event) {
         'success'
       );
       
-      // Close modal and refresh products
+      // Remove loading overlay
+      if (loadingOverlay.parentNode) {
+        loadingOverlay.parentNode.removeChild(loadingOverlay);
+      }
+      
+      // Show success message in modal briefly
+      const successOverlay = document.createElement('div');
+      successOverlay.className = 'skeleton-overlay';
+      successOverlay.innerHTML = `
+        <div class="skeleton-overlay-content">
+          <div style="color: #4CAF50; font-size: 48px; margin-bottom: 16px;">✓</div>
+          <p>Product saved successfully!</p>
+        </div>
+      `;
+      modalContent.appendChild(successOverlay);
+      
+      // Close modal and refresh products after delay
       setTimeout(() => {
         closeProductModal();
-        loadProducts();
+        // Show skeleton during refresh
+        showSkeleton(true);
+        setTimeout(() => {
+          loadProducts();
+        }, 300);
       }, 1500);
       
     } else {
@@ -858,6 +902,11 @@ async function saveProduct(event) {
   } catch (error) {
     console.error('Error saving product:', error);
     showToast(`Failed to save product: ${error.message}`, 'error');
+    
+    // Remove loading overlay
+    if (loadingOverlay.parentNode) {
+      loadingOverlay.parentNode.removeChild(loadingOverlay);
+    }
     
     // Re-enable submit button
     btnText.style.display = 'inline';
@@ -875,7 +924,8 @@ async function deleteProduct(productId) {
     return;
   }
   
-  showLoading(true, 'Deleting product...');
+  // Show skeleton during deletion
+  showSkeleton(true);
   
   try {
     const response = await fetch(`${API_BASE}/api/products/${productId}`, {
@@ -885,7 +935,10 @@ async function deleteProduct(productId) {
     
     if (response.ok) {
       showToast(`Product "${product.name}" deleted successfully!`, 'success');
-      loadProducts();
+      // Keep skeleton shown briefly, then refresh
+      setTimeout(() => {
+        loadProducts();
+      }, 500);
     } else {
       const data = await response.json();
       throw new Error(data.message || 'Failed to delete product');
@@ -893,8 +946,8 @@ async function deleteProduct(productId) {
   } catch (error) {
     console.error('Delete error:', error);
     showToast(`Failed to delete product: ${error.message}`, 'error');
-  } finally {
-    showLoading(false);
+    // Hide skeleton on error
+    showSkeleton(false);
   }
 }
 
@@ -925,7 +978,7 @@ function toggleSalePriceSection() {
 async function loadProducts() {
   if (!requireAuth()) return;
   
-  showLoading(true, 'Loading products...');
+  // Skeleton is already shown by the HTML script
   
   try {
     const response = await fetch(`${API_BASE}/api/products?raw=true`, {
@@ -956,11 +1009,17 @@ async function loadProducts() {
     // Update stats
     updateStats();
     
+    // Hide skeleton and show actual content
+    showSkeleton(false);
+    
     showToast(`Loaded ${products.length} products`, 'success', 2000);
     
   } catch (error) {
     console.error('❌ Error loading products:', error);
     showToast(`Failed to load products: ${error.message}`, 'error');
+    
+    // Hide skeleton on error
+    showSkeleton(false);
     
     // Show error in table
     const tbody = document.getElementById('productsTbody');
@@ -973,9 +1032,6 @@ async function loadProducts() {
         </td>
       </tr>
     `;
-    
-  } finally {
-    showLoading(false);
   }
 }
 
@@ -1191,15 +1247,41 @@ function changePage(page) {
 // Logout
 function logout() {
   if (confirm('Are you sure you want to logout?')) {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
-    window.location.href = 'admin-login.html';
+    // Show loading skeleton
+    document.body.innerHTML = `
+      <div style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #111 0%, #333 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      ">
+        <div class="skeleton-spinner" style="margin-bottom: 20px;"></div>
+        <p>Logging out...</p>
+      </div>
+    `;
+    
+    setTimeout(() => {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      window.location.href = 'admin-login.html';
+    }, 500);
   }
 }
 
 // Refresh products
 function refreshProducts() {
-  loadProducts();
+  showSkeleton(true);
+  setTimeout(() => {
+    loadProducts();
+  }, 300);
 }
 
 // ==================== INITIALIZATION ====================
@@ -1284,189 +1366,8 @@ async function initializeAdmin() {
     });
   }
   
-  // Load products
+  // Load products (skeleton already shown by HTML)
   await loadProducts();
-  
-  // Add CSS for spinner
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .spinner {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 4px solid #f3f3f3;
-      border-top: 4px solid #3498db;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes slideUp {
-      from { transform: translateY(100px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    
-    .product-image {
-      width: 72px;
-      height: 72px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid #eee;
-    }
-    
-    .category-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    
-    .category-badge.brand {
-      background: #e3f2fd;
-      color: #1976d2;
-    }
-    
-    .category-badge.thrift {
-      background: #f3e5f5;
-      color: #7b1fa2;
-    }
-    
-    .stock-status {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-    }
-    
-    .stock-status.in-stock {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .stock-status.low-stock {
-      background: #fff3cd;
-      color: #856404;
-    }
-    
-    .stock-status.out-of-stock {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .action-buttons {
-      display: flex;
-      gap: 5px;
-    }
-    
-    .btn {
-      border: 0;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      background: #e6eefc;
-      color: #0647a6;
-      font-size: 14px;
-      transition: all 0.2s;
-    }
-    
-    .btn:hover:not(:disabled) {
-      opacity: 0.9;
-      transform: translateY(-1px);
-    }
-    
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    
-    .btn.primary {
-      background: #ffd400;
-      color: #0647a6;
-      font-weight: 600;
-    }
-    
-    .btn.danger {
-      background: #e53935;
-      color: white;
-    }
-    
-    .btn.small {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
-    
-    .btn-icon {
-      background: white;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 14px;
-      transition: all 0.2s ease;
-    }
-    
-    .btn-icon:hover {
-      transform: scale(1.1);
-    }
-    
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(255, 255, 255, 0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      display: none;
-    }
-    
-    .loading-overlay.active {
-      display: flex;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    }
-    
-    .stat-card .value {
-      font-size: 32px;
-      font-weight: 700;
-      color: #0b6ff2;
-      margin: 8px 0;
-    }
-    
-    .stat-card .label {
-      color: #6c757d;
-      font-size: 14px;
-    }
-  `;
-  document.head.appendChild(style);
-  
-  console.log('✅ Admin panel initialized');
 }
 
 // Make functions available globally

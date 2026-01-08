@@ -172,6 +172,59 @@
       line-height: 1.5;
     }
 
+    /* Skeleton Loaders for Login */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 75%);
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes skeleton-loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-text {
+      height: 12px;
+      margin-bottom: 8px;
+      border-radius: 6px;
+    }
+
+    .skeleton-input {
+      height: 48px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+
+    .skeleton-button {
+      height: 52px;
+      border-radius: 10px;
+    }
+
+    .skeleton-logo {
+      width: 60%;
+      height: 32px;
+      margin: 0 auto 12px auto;
+      border-radius: 6px;
+    }
+
+    .skeleton-subtitle {
+      width: 40%;
+      height: 14px;
+      margin: 0 auto 30px auto;
+      border-radius: 4px;
+    }
+
+    /* Login Skeleton Container */
+    .login-skeleton {
+      display: none;
+    }
+
+    .login-skeleton.show {
+      display: block;
+    }
+
     @media (max-width: 480px) {
       .login-container {
         padding: 30px 20px;
@@ -185,61 +238,90 @@
 </head>
 <body>
   <div class="login-container">
-    <div class="logo">
-      <h1>Swish Drip</h1>
-      <p>Admin Dashboard</p>
+    <!-- Skeleton Loader for Login Form -->
+    <div class="login-skeleton" id="loginSkeleton">
+      <div class="logo">
+        <div class="skeleton skeleton-logo"></div>
+        <div class="skeleton skeleton-subtitle"></div>
+      </div>
+      
+      <div class="input-group">
+        <div class="skeleton skeleton-text" style="width: 120px;"></div>
+        <div class="skeleton skeleton-input"></div>
+      </div>
+      
+      <div class="input-group">
+        <div class="skeleton skeleton-text" style="width: 80px;"></div>
+        <div class="skeleton skeleton-input"></div>
+      </div>
+      
+      <div class="skeleton skeleton-button"></div>
+      
+      <div class="info">
+        <div class="skeleton skeleton-text" style="width: 80%; margin: 10px auto;"></div>
+        <div class="skeleton skeleton-text" style="width: 60%; margin: 5px auto;"></div>
+      </div>
     </div>
 
-    <form id="loginForm">
-      <div class="input-group">
-        <label for="email">Admin Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          placeholder="admin@swishdrip.com" 
-          required
-          autocomplete="username"
-        >
+    <!-- Actual Login Form -->
+    <div id="loginFormContainer">
+      <div class="logo">
+        <h1>Swish Drip</h1>
+        <p>Admin Dashboard</p>
       </div>
 
-      <div class="input-group">
-        <label for="password">Password</label>
-        <div class="password-wrap">
+      <form id="loginForm">
+        <div class="input-group">
+          <label for="email">Admin Email</label>
           <input 
-            type="password" 
-            id="password" 
-            placeholder="Enter admin password" 
+            type="email" 
+            id="email" 
+            placeholder="admin@swishdrip.com" 
             required
-            autocomplete="current-password"
+            autocomplete="username"
           >
-          <button type="button" class="toggle-password" id="togglePassword">
-            👁️
-          </button>
         </div>
-      </div>
 
-      <button type="submit" class="login-btn" id="loginBtn">
-        <span id="loginText">Login to Dashboard</span>
-        <span id="loginLoading" class="loading" style="display: none;"></span>
-      </button>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="password-wrap">
+            <input 
+              type="password" 
+              id="password" 
+              placeholder="Enter admin password" 
+              required
+              autocomplete="current-password"
+            >
+            <button type="button" class="toggle-password" id="togglePassword">
+              👁️
+            </button>
+          </div>
+        </div>
 
-      <div class="error-message" id="errorMessage"></div>
+        <button type="submit" class="login-btn" id="loginBtn">
+          <span id="loginText">Login to Dashboard</span>
+          <span id="loginLoading" class="loading" style="display: none;"></span>
+        </button>
 
-      <div class="info">
-        <p>Use your admin credentials to access the dashboard.</p>
-        <p style="margin-top: 5px; font-size: 11px; color: rgba(255, 255, 255, 0.4);">
-          Default: admin@swishdrip.com / changeme
-        </p>
-      </div>
-    </form>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="info">
+          <p>Use your admin credentials to access the dashboard.</p>
+          <p style="margin-top: 5px; font-size: 11px; color: rgba(255, 255, 255, 0.4);">
+            Default: admin@swishdrip.com / changeme
+          </p>
+        </div>
+      </form>
+    </div>
   </div>
 
- 
 <script>
   const API_BASE = "http://localhost:5000";
   
   // DOM Elements
   const loginForm = document.getElementById('loginForm');
+  const loginFormContainer = document.getElementById('loginFormContainer');
+  const loginSkeleton = document.getElementById('loginSkeleton');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
   const togglePasswordBtn = document.getElementById('togglePassword');
@@ -247,6 +329,27 @@
   const loginText = document.getElementById('loginText');
   const loginLoading = document.getElementById('loginLoading');
   const errorMessage = document.getElementById('errorMessage');
+
+  // Show skeleton loader briefly on page load
+  document.addEventListener('DOMContentLoaded', () => {
+    // Show skeleton for 800ms to simulate loading
+    loginFormContainer.style.display = 'none';
+    loginSkeleton.classList.add('show');
+    
+    setTimeout(() => {
+      loginSkeleton.classList.remove('show');
+      loginFormContainer.style.display = 'block';
+      
+      // Auto-focus email field
+      emailInput.focus();
+      
+      // Pre-fill with default admin email for convenience
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        emailInput.value = 'admin@swishdrip.com';
+        passwordInput.focus();
+      }
+    }, 800);
+  });
 
   // Toggle password visibility
   togglePasswordBtn.addEventListener('click', () => {
@@ -290,8 +393,14 @@
         localStorage.setItem('admin_token', data.token);
         localStorage.setItem('admin_user', JSON.stringify(data.user));
         
-        // Redirect to admin dashboard
-        window.location.href = 'admin.html';
+        // Show success skeleton before redirect
+        loginFormContainer.style.display = 'none';
+        loginSkeleton.classList.add('show');
+        
+        // Redirect to admin dashboard after brief delay
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 500);
       } else {
         showError(data.message || 'Login failed. Please check your credentials.');
       }
@@ -316,14 +425,6 @@
   function hideError() {
     errorMessage.classList.remove('show');
     errorMessage.style.display = 'none';
-  }
-
-  // Auto-focus email field
-  emailInput.focus();
-  
-  // Pre-fill with default admin email for convenience
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    emailInput.value = 'admin@swishdrip.com';
   }
 </script>
 </body>

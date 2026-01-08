@@ -29,54 +29,86 @@
   </header>
 
   <main class="article-page">
-    <!-- Article Header -->
-    <div class="article-header">
+    <!-- Article Header with Skeleton -->
+    <div class="article-header skeleton-loader">
       <div class="breadcrumb">
         <a href="index.html">Home</a> &gt; 
         <a href="blog.html">Blog</a> &gt; 
-        <span id="article-category">Fashion</span>
+        <span id="article-category" class="skeleton skeleton-text">Fashion</span>
       </div>
       
       <div class="article-meta">
-        <span class="category-badge" id="article-category-badge">Fashion</span>
-        <span class="date" id="article-date">March 15, 2024</span>
-        <span class="read-time" id="article-read-time">5 min read</span>
+        <span class="category-badge skeleton skeleton-text" id="article-category-badge">Fashion</span>
+        <span class="date skeleton skeleton-text" id="article-date">March 15, 2024</span>
+        <span class="read-time skeleton skeleton-text" id="article-read-time">5 min read</span>
       </div>
       
-      <h1 id="article-title">The Evolution of Streetwear: From Subculture to Mainstream</h1>
+      <h1 id="article-title" class="skeleton skeleton-text">The Evolution of Streetwear: From Subculture to Mainstream</h1>
       
       <div class="author-info">
-        <div class="author-avatar">
+        <div class="author-avatar skeleton">
           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" 
                alt="Author">
         </div>
         <div class="author-details">
-          <span class="author-name" id="article-author">Alex Morgan</span>
-          <span class="author-role">Fashion Editor</span>
+          <span class="author-name skeleton skeleton-text" id="article-author">Alex Morgan</span>
+          <span class="author-role skeleton skeleton-text">Fashion Editor</span>
         </div>
       </div>
     </div>
 
-    <!-- Article Content -->
-    <article class="article-content">
-      <div class="article-image">
+    <!-- Article Content with Skeleton -->
+    <article class="article-content skeleton-loader">
+      <div class="article-image skeleton">
         <img id="article-image" src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" 
              alt="Article Image">
       </div>
       
       <div class="article-body" id="article-body">
-        <!-- Article content will be loaded here -->
-        <div class="loading-article">
-          <div class="spinner"></div>
-          <p>Loading article...</p>
-        </div>
+        <!-- Article content skeleton -->
+        <p class="skeleton skeleton-text skeleton-paragraph">
+          Streetwear has come a long way from its humble beginnings in the skate and hip-hop scenes of the 1980s.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph medium">
+          What started as a form of self-expression among subcultures has now become a dominant force in global fashion.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph">
+          Brands like Supreme, Stüssy, and Bape paved the way for what we now recognize as modern streetwear.
+        </p>
+        
+        <h2 class="skeleton skeleton-text skeleton-heading">The Cultural Shift</h2>
+        
+        <p class="skeleton skeleton-text skeleton-paragraph">
+          The transformation of streetwear from niche to mainstream can be attributed to several key factors.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph short">
+          Celebrity endorsements played a significant role in its popularization.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph">
+          Social media platforms like Instagram allowed streetwear brands to reach global audiences instantly.
+        </p>
+        
+        <h2 class="skeleton skeleton-text skeleton-heading">Current Trends and Future Directions</h2>
+        
+        <p class="skeleton skeleton-text skeleton-paragraph">
+          Today, streetwear continues to evolve, blending with high fashion and sustainable practices.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph medium">
+          Many luxury brands have incorporated streetwear elements into their collections.
+        </p>
+        <p class="skeleton skeleton-text skeleton-paragraph short">
+          The future looks promising for this dynamic fashion category.
+        </p>
       </div>
       
-      <!-- Related Products -->
-      <div class="related-products">
-        <h3>Shop Related Items</h3>
+      <!-- Related Products with Skeleton -->
+      <div class="related-products skeleton-loader">
+        <h3 class="skeleton skeleton-text skeleton-heading">Shop Related Items</h3>
         <div class="products-grid" id="related-products">
-          <!-- Related products will be loaded here -->
+          <div class="skeleton-product-card"></div>
+          <div class="skeleton-product-card"></div>
+          <div class="skeleton-product-card"></div>
+          <div class="skeleton-product-card"></div>
         </div>
       </div>
       
@@ -94,22 +126,77 @@
       </div>
     </article>
 
-    <!-- Related Articles -->
+    <!-- Related Articles with Skeleton -->
     <section class="related-articles">
       <h2>You Might Also Like</h2>
       <div class="articles-grid" id="related-articles">
-        <!-- Related articles will be loaded here -->
+        <!-- Article Card 1 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge style skeleton skeleton-text">Style Tips</span>
+              <span class="date skeleton skeleton-text">March 14, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=2">5 Essential Streetwear Pieces Every Wardrobe Needs</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Discover the must-have items that form the foundation of a great streetwear collection.
+            </p>
+          </div>
+        </article>
+
+        <!-- Article Card 2 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge sustainability skeleton skeleton-text">Sustainability</span>
+              <span class="date skeleton skeleton-text">March 13, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=3">Sustainable Fashion: How Thrifting Reduces Environmental Impact</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Learn how buying second-hand clothing contributes to a more sustainable fashion industry.
+            </p>
+          </div>
+        </article>
+
+        <!-- Article Card 3 -->
+        <article class="article-card skeleton-loader">
+          <div class="article-image skeleton">
+            <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Article">
+          </div>
+          <div class="article-content">
+            <div class="article-meta">
+              <span class="category-badge brands skeleton skeleton-text">Brands</span>
+              <span class="date skeleton skeleton-text">March 12, 2024</span>
+            </div>
+            <h3 class="skeleton skeleton-text skeleton-card-title">
+              <a href="blog-article.html?id=4">Brand Spotlight: The Rise of Independent Streetwear Labels</a>
+            </h3>
+            <p class="article-summary skeleton skeleton-text skeleton-card-text">
+              Explore how small brands are making big waves in the streetwear scene with unique designs.
+            </p>
+          </div>
+        </article>
       </div>
     </section>
 
-    <!-- Newsletter -->
-    <section class="newsletter-section">
+    <!-- Newsletter with Skeleton -->
+    <section class="newsletter-section skeleton-loader">
       <div class="newsletter-content">
-        <h2>Enjoying This Article?</h2>
-        <p>Subscribe to our newsletter for more streetwear insights and style tips.</p>
+        <h2 class="skeleton skeleton-text">Enjoying This Article?</h2>
+        <p class="skeleton skeleton-text">Subscribe to our newsletter for more streetwear insights and style tips.</p>
         <form id="newsletter-form" class="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
-          <button type="submit" class="btn primary">Subscribe</button>
+          <input type="email" placeholder="Your email address" required class="skeleton">
+          <button type="submit" class="btn primary skeleton">Subscribe</button>
         </form>
       </div>
     </section>
@@ -142,5 +229,45 @@
 
   <script src="js/script.js"></script>
   <script src="js/blog-article.js"></script>
+  <script>
+    // JavaScript to remove skeleton loaders when content is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulate content loading (remove this in production)
+      setTimeout(function() {
+        const skeletons = document.querySelectorAll('.skeleton-loader');
+        skeletons.forEach(skeleton => {
+          skeleton.classList.remove('skeleton-loader');
+          const skeletonTexts = skeleton.querySelectorAll('.skeleton-text');
+          skeletonTexts.forEach(text => {
+            text.classList.remove('skeleton', 'skeleton-text');
+          });
+          const skeletonElements = skeleton.querySelectorAll('.skeleton');
+          skeletonElements.forEach(el => {
+            if (!el.classList.contains('skeleton-text')) {
+              el.classList.remove('skeleton');
+            }
+          });
+        });
+        
+        // Remove specific skeleton classes
+        document.querySelectorAll('.skeleton-paragraph, .skeleton-heading, .skeleton-product-card, .skeleton-card-title, .skeleton-card-text').forEach(el => {
+          el.classList.remove('skeleton');
+        });
+      }, 2000); // 2 second delay for demonstration
+    });
+    
+    // Share functions
+    function shareOnFacebook() {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank');
+    }
+    
+    function shareOnTwitter() {
+      window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(document.title), '_blank');
+    }
+    
+    function shareOnWhatsApp() {
+      window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href), '_blank');
+    }
+  </script>
 </body>
 </html>

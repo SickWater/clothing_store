@@ -66,6 +66,204 @@ function updateResultsCount(count) {
   }
 }
 
+// ---------- Skeleton Loader Functions ----------
+function createSkeletonProductCard() {
+  const div = document.createElement("div");
+  div.className = "skeleton-product";
+  div.innerHTML = `
+    <div class="skeleton skeleton-image"></div>
+    <div class="skeleton skeleton-title"></div>
+    <div class="skeleton skeleton-price"></div>
+    <div class="skeleton skeleton-category"></div>
+    <div class="skeleton skeleton-sizes"></div>
+    <div class="skeleton skeleton-stock"></div>
+    <div class="skeleton-buttons">
+      <div class="skeleton skeleton-button"></div>
+      <div class="skeleton skeleton-button"></div>
+    </div>
+  `;
+  return div;
+}
+
+function showSkeletonLoaders() {
+  // Show skeleton for main shop grid
+  const skeletonShop = document.getElementById('skeleton-shop');
+  const productList = document.getElementById('product-list');
+  
+  if (skeletonShop && productList) {
+    skeletonShop.style.display = 'grid';
+    productList.style.display = 'none';
+    
+    // Clear and add skeleton cards (6 cards for shop)
+    skeletonShop.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+      skeletonShop.appendChild(createSkeletonProductCard());
+    }
+  }
+  
+  // Show skeleton for sale grid
+  const skeletonSale = document.getElementById('skeleton-sale');
+  const saleGrid = document.getElementById('sale-grid');
+  
+  if (skeletonSale && saleGrid) {
+    skeletonSale.style.display = 'grid';
+    saleGrid.style.display = 'none';
+    
+    skeletonSale.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      skeletonSale.appendChild(createSkeletonProductCard());
+    }
+  }
+  
+  // Show skeleton for brand grid
+  const skeletonBrand = document.getElementById('skeleton-brand');
+  const brandGrid = document.getElementById('brand-grid');
+  
+  if (skeletonBrand && brandGrid) {
+    skeletonBrand.style.display = 'grid';
+    brandGrid.style.display = 'none';
+    
+    skeletonBrand.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      skeletonBrand.appendChild(createSkeletonProductCard());
+    }
+  }
+  
+  // Show skeleton for thrift grid
+  const skeletonThrift = document.getElementById('skeleton-thrift');
+  const thriftGrid = document.getElementById('thrift-grid');
+  
+  if (skeletonThrift && thriftGrid) {
+    skeletonThrift.style.display = 'grid';
+    thriftGrid.style.display = 'none';
+    
+    skeletonThrift.innerHTML = '';
+    for (let i = 0; i < 4; i++) {
+      skeletonThrift.appendChild(createSkeletonProductCard());
+    }
+  }
+  
+  // Show skeleton for blog
+  const skeletonBlog = document.getElementById('skeleton-blog');
+  const blogSection = document.getElementById('blog');
+  
+  if (skeletonBlog && blogSection) {
+    skeletonBlog.style.display = 'block';
+    blogSection.querySelectorAll('article').forEach(article => {
+      article.style.display = 'none';
+    });
+  }
+  
+  // Show skeleton for cart if empty
+  const skeletonCart = document.getElementById('skeleton-cart');
+  const cartEditor = document.getElementById('cart-editor');
+  
+  if (skeletonCart && cartEditor && cart.length === 0) {
+    skeletonCart.style.display = 'block';
+    cartEditor.style.display = 'none';
+  }
+}
+
+function hideSkeletonLoaders() {
+  // Hide all skeleton loaders and show real content
+  const skeletonIds = [
+    'skeleton-shop', 'skeleton-sale', 'skeleton-brand', 
+    'skeleton-thrift', 'skeleton-blog', 'skeleton-cart',
+    'skeleton-auth', 'skeleton-product-modal', 'skeleton-checkout'
+  ];
+  
+  skeletonIds.forEach(id => {
+    const skeleton = document.getElementById(id);
+    if (skeleton) skeleton.style.display = 'none';
+  });
+  
+  // Show real content
+  const productList = document.getElementById('product-list');
+  if (productList) productList.style.display = 'grid';
+  
+  const saleGrid = document.getElementById('sale-grid');
+  if (saleGrid) saleGrid.style.display = 'grid';
+  
+  const brandGrid = document.getElementById('brand-grid');
+  if (brandGrid) brandGrid.style.display = 'grid';
+  
+  const thriftGrid = document.getElementById('thrift-grid');
+  if (thriftGrid) thriftGrid.style.display = 'grid';
+  
+  const blogSection = document.getElementById('blog');
+  if (blogSection) {
+    blogSection.querySelectorAll('article').forEach(article => {
+      article.style.display = 'block';
+    });
+  }
+  
+  const cartEditor = document.getElementById('cart-editor');
+  if (cartEditor) cartEditor.style.display = 'block';
+}
+
+// Add skeleton for product modal when loading
+function showProductModalSkeleton() {
+  const skeletonModal = document.getElementById('skeleton-product-modal');
+  const modalContent = document.querySelector('#product-modal .modal-content');
+  
+  if (skeletonModal && modalContent) {
+    skeletonModal.style.display = 'flex';
+    modalContent.style.display = 'none';
+  }
+}
+
+function hideProductModalSkeleton() {
+  const skeletonModal = document.getElementById('skeleton-product-modal');
+  const modalContent = document.querySelector('#product-modal .modal-content');
+  
+  if (skeletonModal && modalContent) {
+    skeletonModal.style.display = 'none';
+    modalContent.style.display = 'flex';
+  }
+}
+
+// Add skeleton for auth modal when loading
+function showAuthModalSkeleton() {
+  const skeletonAuth = document.getElementById('skeleton-auth');
+  const authContent = document.querySelector('#auth-modal .auth-modal-container');
+  
+  if (skeletonAuth && authContent) {
+    skeletonAuth.style.display = 'flex';
+    authContent.style.display = 'none';
+  }
+}
+
+function hideAuthModalSkeleton() {
+  const skeletonAuth = document.getElementById('skeleton-auth');
+  const authContent = document.querySelector('#auth-modal .auth-modal-container');
+  
+  if (skeletonAuth && authContent) {
+    skeletonAuth.style.display = 'none';
+    authContent.style.display = 'flex';
+  }
+}
+
+// Add skeleton for checkout modal when loading
+function showCheckoutModalSkeleton() {
+  const skeletonCheckout = document.getElementById('skeleton-checkout');
+  const checkoutContent = document.querySelector('#checkout-modal .modal-content');
+  
+  if (skeletonCheckout && checkoutContent) {
+    skeletonCheckout.style.display = 'block';
+    checkoutContent.style.display = 'none';
+  }
+}
+
+function hideCheckoutModalSkeleton() {
+  const skeletonCheckout = document.getElementById('skeleton-checkout');
+  const checkoutContent = document.querySelector('#checkout-modal .modal-content');
+  
+  if (skeletonCheckout && checkoutContent) {
+    skeletonCheckout.style.display = 'none';
+    checkoutContent.style.display = 'block';
+  }
+}
+
 // ---------- Auth State Management ----------
 let currentUser = JSON.parse(localStorage.getItem("user_data")) || null;
 let authToken = localStorage.getItem("auth_token") || null;
@@ -378,6 +576,9 @@ let currentFilters = {
 // ---------- Fetch products ----------
 async function fetchProducts() {
   try {
+    // Show skeleton loaders
+    showSkeletonLoaders();
+    
     if (loadingSpinner) loadingSpinner.style.display = "block";
     if (loadingMessage) {
       loadingMessage.style.display = "block";
@@ -422,9 +623,16 @@ async function fetchProducts() {
     renderAllSections();
     updateCartDisplay();
     
+    // Hide skeleton loaders
+    hideSkeletonLoaders();
+    
     console.log(`Loaded ${allProducts.length} products`);
   } catch (err) {
     console.error("Failed to load products:", err);
+    
+    // Hide skeleton loaders on error too
+    hideSkeletonLoaders();
+    
     if (loadingSpinner) loadingSpinner.style.display = "none";
     if (loadingMessage) loadingMessage.textContent = "⚠️ Failed to load products: " + err.message;
     if (retryBtn) retryBtn.style.display = "inline-block";
@@ -702,43 +910,54 @@ async function updateProductStock(productId, size, quantity) {
 // ---------- Modal ----------
 function openModal(product) {
   if (!productModal) return;
+  
+  // Show skeleton loader for modal
+  showProductModalSkeleton();
+  
   selectedProductForModal = product;
   selectedSizeForModal = null;
   productModal.dataset.productId = product._id || product.id || "";
+  
+  // Use setTimeout to simulate loading (remove in production)
+  setTimeout(() => {
+    modalName.textContent = product.name || "";
+    modalPrice.textContent = (product.sale && product.salePrice) ? `R${formatR(product.salePrice)}` : `R${formatR(product.price)}`;
+    modalDescription.textContent = product.description || "";
+    const mainImgSrc = buildImageUrl(product.image || product.images?.[0] || "");
+    modalMainImg.src = mainImgSrc;
+    modalMainImg.onerror = () => {
+      modalMainImg.src = 'https://via.placeholder.com/500x400?text=Image+Not+Found';
+    };
 
-  modalName.textContent = product.name || "";
-  modalPrice.textContent = (product.sale && product.salePrice) ? `R${formatR(product.salePrice)}` : `R${formatR(product.price)}`;
-  modalDescription.textContent = product.description || "";
-  const mainImgSrc = buildImageUrl(product.image || product.images?.[0] || "");
-  modalMainImg.src = mainImgSrc;
-  modalMainImg.onerror = () => {
-    modalMainImg.src = 'https://via.placeholder.com/500x400?text=Image+Not+Found';
-  };
-
-  // Thumbnails
-  if (modalThumbs) {
-    modalThumbs.innerHTML = "";
-    const thumbs = (product.images?.length) ? product.images : (product.image ? [product.image] : []);
-    thumbs.forEach((src, idx) => {
-      const t = document.createElement("img");
-      t.src = buildImageUrl(src);
-      t.style.width = "60px";
-      t.style.height = "60px";
-      t.style.objectFit = "cover";
-      t.style.border = idx === 0 ? "2px solid #111" : "2px solid transparent";
-      t.style.cursor = "pointer";
-      t.style.borderRadius = "4px";
-      t.addEventListener("click", () => {
-        modalMainImg.src = buildImageUrl(src);
-        qsa("img", modalThumbs).forEach(img => img.style.border = "2px solid transparent");
-        t.style.border = "2px solid #111";
+    // Thumbnails
+    if (modalThumbs) {
+      modalThumbs.innerHTML = "";
+      const thumbs = (product.images?.length) ? product.images : (product.image ? [product.image] : []);
+      thumbs.forEach((src, idx) => {
+        const t = document.createElement("img");
+        t.src = buildImageUrl(src);
+        t.style.width = "60px";
+        t.style.height = "60px";
+        t.style.objectFit = "cover";
+        t.style.border = idx === 0 ? "2px solid #111" : "2px solid transparent";
+        t.style.cursor = "pointer";
+        t.style.borderRadius = "4px";
+        t.addEventListener("click", () => {
+          modalMainImg.src = buildImageUrl(src);
+          qsa("img", modalThumbs).forEach(img => img.style.border = "2px solid transparent");
+          t.style.border = "2px solid #111";
+        });
+        modalThumbs.appendChild(t);
       });
-      modalThumbs.appendChild(t);
-    });
-  }
+    }
 
-  renderModalSizes(product.sizes || []);
-  productModal.style.display = "flex";
+    renderModalSizes(product.sizes || []);
+    
+    // Hide skeleton and show actual content
+    hideProductModalSkeleton();
+    
+    productModal.style.display = "flex";
+  }, 300); // Small delay to show skeleton (remove or reduce in production)
 }
 
 function renderModalSizes(sizes) {
@@ -1422,6 +1641,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize new systems
   initSearchAndFilter();
   setupEnhancedCheckout();
+  
+  // Show skeleton loaders immediately
+  showSkeletonLoaders();
   
   // Load products and render cart
   fetchProducts();

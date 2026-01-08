@@ -88,12 +88,23 @@
         <p id="no-products" style="display:none;">No items found.</p>
       </div>
 
+      <!-- Skeleton loader grid for shop -->
+      <div class="skeleton-grid" id="skeleton-shop" style="display: none;">
+        <!-- Skeleton product cards will be added here by JavaScript -->
+      </div>
+
       <div class="product-grid" id="product-list"></div>
     </section>
 
     <!-- SALE -->
     <section id="sale">
       <h2>🔥 Sale / Deals</h2>
+      
+      <!-- Skeleton loader grid for sale -->
+      <div class="skeleton-grid" id="skeleton-sale" style="display: none;">
+        <!-- Skeleton product cards will be added here by JavaScript -->
+      </div>
+      
       <div class="product-grid" id="sale-grid"></div>
       <p id="no-sale" style="display:none;">No deals right now — check back soon!</p>
     </section>
@@ -105,6 +116,11 @@
       <div class="filter-bar">
         <label for="brand-filter">Filter:</label>
         <select id="brand-filter"></select>
+      </div>
+      
+      <!-- Skeleton loader grid for brand -->
+      <div class="skeleton-grid" id="skeleton-brand" style="display: none;">
+        <!-- Skeleton product cards will be added here by JavaScript -->
       </div>
 
       <div class="product-grid" id="brand-grid"></div>
@@ -118,6 +134,11 @@
         <label for="thrift-filter">Filter by type:</label>
         <select id="thrift-filter"></select>
       </div>
+      
+      <!-- Skeleton loader grid for thrift -->
+      <div class="skeleton-grid" id="skeleton-thrift" style="display: none;">
+        <!-- Skeleton product cards will be added here by JavaScript -->
+      </div>
 
       <div class="product-grid" id="thrift-grid"></div>
     </section>
@@ -125,6 +146,20 @@
     <!-- BLOG -->
     <section id="blog">
       <h2>Blog / Style Tips</h2>
+      
+      <!-- Skeleton for blog posts -->
+      <div id="skeleton-blog" style="display: none;">
+        <div class="skeleton-blog-post">
+          <div class="skeleton skeleton-blog-title"></div>
+          <div class="skeleton skeleton-blog-text"></div>
+          <div class="skeleton skeleton-blog-text short"></div>
+        </div>
+        <div class="skeleton-blog-post">
+          <div class="skeleton skeleton-blog-title"></div>
+          <div class="skeleton skeleton-blog-text"></div>
+          <div class="skeleton skeleton-blog-text short"></div>
+        </div>
+      </div>
 
       <article>
         <h3>5 Ways to Style Your Hoodie</h3>
@@ -158,6 +193,29 @@
     <!-- CART -->
     <section id="cart">
       <h2>Your Cart</h2>
+      
+      <!-- Skeleton for cart -->
+      <div id="skeleton-cart" style="display: none;">
+        <div class="skeleton-cart-item">
+          <div class="skeleton skeleton-cart-image"></div>
+          <div class="skeleton-cart-details">
+            <div class="skeleton skeleton-cart-name"></div>
+            <div class="skeleton skeleton-cart-meta"></div>
+            <div class="skeleton skeleton-cart-actions"></div>
+          </div>
+          <div class="skeleton skeleton-cart-total"></div>
+        </div>
+        <div class="skeleton-cart-item">
+          <div class="skeleton skeleton-cart-image"></div>
+          <div class="skeleton-cart-details">
+            <div class="skeleton skeleton-cart-name"></div>
+            <div class="skeleton skeleton-cart-meta"></div>
+            <div class="skeleton skeleton-cart-actions"></div>
+          </div>
+          <div class="skeleton skeleton-cart-total"></div>
+        </div>
+      </div>
+      
       <div id="cart-editor">
         <!-- Cart items will be loaded here with editing controls -->
       </div>
@@ -181,6 +239,15 @@
   <!-- LOGIN / REGISTER MODAL -->
 <!-- AUTH MODAL -->
 <div id="auth-modal" class="modal" style="display:none;">
+  <!-- Skeleton for auth modal -->
+  <div id="skeleton-auth" class="modal-content auth-modal-container" style="display: none;">
+    <div style="padding: 40px; width: 100%;">
+      <div class="skeleton skeleton-auth-input"></div>
+      <div class="skeleton skeleton-auth-input"></div>
+      <div class="skeleton skeleton-auth-button"></div>
+    </div>
+  </div>
+  
   <div class="modal-content auth-modal-container">
     <span id="close-auth" class="close-btn">&times;</span>
     
@@ -288,6 +355,26 @@
 
   <!-- PRODUCT DETAIL MODAL -->
   <div id="product-modal" class="modal">
+    <!-- Skeleton for product modal -->
+    <div id="skeleton-product-modal" class="modal-content" style="display: none;">
+      <div class="skeleton-modal-left">
+        <div class="skeleton skeleton-modal-image"></div>
+        <div class="skeleton-modal-thumbs">
+          <div class="skeleton skeleton-modal-thumb"></div>
+          <div class="skeleton skeleton-modal-thumb"></div>
+          <div class="skeleton skeleton-modal-thumb"></div>
+        </div>
+      </div>
+      <div class="skeleton-modal-right">
+        <div class="skeleton skeleton-modal-title"></div>
+        <div class="skeleton skeleton-modal-price"></div>
+        <div class="skeleton skeleton-modal-description"></div>
+        <div class="skeleton skeleton-modal-description short"></div>
+        <div class="skeleton skeleton-modal-sizes"></div>
+        <div class="skeleton skeleton-modal-button"></div>
+      </div>
+    </div>
+    
     <div class="modal-content">
       <span class="close-btn">&times;</span>
 
@@ -308,6 +395,34 @@
 
   <!-- CHECKOUT MODAL -->
   <div id="checkout-modal" class="modal">
+    <!-- Skeleton for checkout modal -->
+    <div id="skeleton-checkout" class="modal-content" style="max-width:500px; display:none;">
+      <span class="close-btn">&times;</span>
+      <h2>Order Summary</h2>
+      <div style="margin:20px 0;">
+        <div class="skeleton skeleton-checkout-line"></div>
+        <div class="skeleton skeleton-checkout-line short"></div>
+        <div class="skeleton skeleton-checkout-line"></div>
+      </div>
+      <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:20px 0;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span>Subtotal:</span>
+          <span><div class="skeleton" style="width:60px;height:20px;display:inline-block;"></div></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+          <span>Shipping:</span>
+          <span><div class="skeleton" style="width:40px;height:20px;display:inline-block;"></div></span>
+        </div>
+      </div>
+      <h3>Delivery Information</h3>
+      <div style="margin:20px 0;">
+        <div class="skeleton skeleton-checkout-input"></div>
+        <div class="skeleton skeleton-checkout-input"></div>
+        <div class="skeleton skeleton-checkout-input" style="height:80px;"></div>
+      </div>
+      <div class="skeleton" style="height:50px;width:100%;border-radius:8px;"></div>
+    </div>
+    
     <div class="modal-content">
       <span id="close-modal">&times;</span>
       <h2>Order Summary</h2>
@@ -322,4 +437,3 @@
   <script src="js/script.js"></script>
 </body>
 </html>
-

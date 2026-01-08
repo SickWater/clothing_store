@@ -219,6 +219,136 @@
       opacity: 0.5;
     }
     
+    /* Order skeleton loader */
+    .skeleton-order-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e9ecef;
+    }
+    
+    .skeleton-order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e9ecef;
+    }
+    
+    .skeleton-order-id {
+      width: 120px;
+      height: 20px;
+      border-radius: 6px;
+    }
+    
+    .skeleton-order-badge {
+      width: 80px;
+      height: 24px;
+      border-radius: 12px;
+    }
+    
+    .skeleton-customer-line {
+      height: 14px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+    
+    .skeleton-customer-line.short {
+      width: 60%;
+    }
+    
+    .skeleton-customer-line.medium {
+      width: 80%;
+    }
+    
+    .skeleton-order-item {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .skeleton-item-image {
+      width: 60px;
+      height: 60px;
+      border-radius: 6px;
+      margin-right: 12px;
+    }
+    
+    .skeleton-item-details {
+      flex: 1;
+    }
+    
+    .skeleton-item-name {
+      width: 70%;
+      height: 16px;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+    
+    .skeleton-item-meta {
+      width: 50%;
+      height: 12px;
+      border-radius: 4px;
+    }
+    
+    .skeleton-item-price {
+      width: 60px;
+      height: 20px;
+      border-radius: 4px;
+    }
+    
+    .skeleton-order-total {
+      width: 100px;
+      height: 24px;
+      margin: 16px 0 0 auto;
+      border-radius: 4px;
+    }
+    
+    .skeleton-order-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+      margin-top: 16px;
+    }
+    
+    .skeleton-action-button {
+      width: 100px;
+      height: 36px;
+      border-radius: 6px;
+    }
+    
+    /* Skeleton filters */
+    .skeleton-filters {
+      background: white;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+    
+    .skeleton-search-box {
+      flex: 1;
+      max-width: 400px;
+      height: 44px;
+      border-radius: 8px;
+    }
+    
+    .skeleton-filter-select {
+      width: 120px;
+      height: 36px;
+      border-radius: 6px;
+    }
+    
     /* Responsive */
     @media (max-width: 768px) {
       .order-header {
@@ -239,6 +369,14 @@
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      
+      .skeleton-filters {
+        flex-direction: column;
+      }
+      
+      .skeleton-search-box {
+        max-width: 100%;
+      }
     }
     
     @media (max-width: 480px) {
@@ -251,6 +389,14 @@
       }
       
       .order-actions .btn {
+        width: 100%;
+      }
+      
+      .skeleton-order-actions {
+        flex-direction: column;
+      }
+      
+      .skeleton-action-button {
         width: 100%;
       }
     }
@@ -277,13 +423,42 @@
       </div>
     </header>
 
-    <!-- STATS CARDS -->
-    <div class="stats-grid" id="orderStats">
-      <!-- Stats will be loaded dynamically -->
+    <!-- SKELETON STATS -->
+    <div class="stats-grid" id="skeletonOrderStats" style="display: none;">
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+      <div class="skeleton-stats-card">
+        <div class="skeleton skeleton-stats-value"></div>
+        <div class="skeleton skeleton-stats-label"></div>
+      </div>
+    </div>
+    
+    <!-- ACTUAL STATS (will be populated by JS) -->
+    <div class="stats-grid" id="orderStats"></div>
+
+    <!-- SKELETON FILTERS -->
+    <div class="skeleton-filters" id="skeletonOrderFilters" style="display: none;">
+      <div class="skeleton skeleton-search-box"></div>
+      <div class="filter-group">
+        <div class="skeleton skeleton-filter-select"></div>
+      </div>
+      <div class="filter-group">
+        <div class="skeleton skeleton-filter-select"></div>
+      </div>
     </div>
 
-    <!-- FILTERS -->
-    <div class="filters-bar">
+    <!-- ACTUAL FILTERS -->
+    <div class="filters-bar" id="actualOrderFilters" style="display: none;">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search by customer name, phone, or order ID...">
       </div>
@@ -308,22 +483,85 @@
       </div>
     </div>
 
-    <!-- ORDERS LIST -->
-    <section id="ordersList">
-      <!-- Orders will be loaded dynamically -->
-    </section>
+    <!-- SKELETON ORDERS -->
+    <div id="skeletonOrdersList" style="display: none;">
+      <div class="skeleton-order-card">
+        <div class="skeleton-order-header">
+          <div>
+            <div class="skeleton skeleton-order-id"></div>
+            <div class="skeleton skeleton-customer-line" style="width: 100px; margin-top: 8px;"></div>
+          </div>
+          <div class="skeleton skeleton-order-badge"></div>
+        </div>
+        
+        <div class="customer-info">
+          <div class="skeleton skeleton-customer-line"></div>
+          <div class="skeleton skeleton-customer-line short"></div>
+          <div class="skeleton skeleton-customer-line medium"></div>
+        </div>
+        
+        <div class="order-items">
+          <div class="skeleton-order-item">
+            <div class="skeleton skeleton-item-image"></div>
+            <div class="skeleton-item-details">
+              <div class="skeleton skeleton-item-name"></div>
+              <div class="skeleton skeleton-item-meta"></div>
+            </div>
+            <div class="skeleton skeleton-item-price"></div>
+          </div>
+        </div>
+        
+        <div class="skeleton skeleton-order-total"></div>
+        
+        <div class="skeleton-order-actions">
+          <div class="skeleton skeleton-action-button"></div>
+          <div class="skeleton skeleton-action-button"></div>
+        </div>
+      </div>
+      
+      <div class="skeleton-order-card">
+        <div class="skeleton-order-header">
+          <div>
+            <div class="skeleton skeleton-order-id"></div>
+            <div class="skeleton skeleton-customer-line" style="width: 100px; margin-top: 8px;"></div>
+          </div>
+          <div class="skeleton skeleton-order-badge"></div>
+        </div>
+        
+        <div class="customer-info">
+          <div class="skeleton skeleton-customer-line"></div>
+          <div class="skeleton skeleton-customer-line short"></div>
+          <div class="skeleton skeleton-customer-line medium"></div>
+        </div>
+        
+        <div class="order-items">
+          <div class="skeleton-order-item">
+            <div class="skeleton skeleton-item-image"></div>
+            <div class="skeleton-item-details">
+              <div class="skeleton skeleton-item-name"></div>
+              <div class="skeleton skeleton-item-meta"></div>
+            </div>
+            <div class="skeleton skeleton-item-price"></div>
+          </div>
+        </div>
+        
+        <div class="skeleton skeleton-order-total"></div>
+        
+        <div class="skeleton-order-actions">
+          <div class="skeleton skeleton-action-button"></div>
+          <div class="skeleton skeleton-action-button"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTUAL ORDERS LIST -->
+    <section id="ordersList"></section>
 
     <!-- EMPTY STATE -->
     <div id="emptyState" class="empty-state" style="display: none;">
       <div class="empty-state-icon">📦</div>
       <h3>No Orders Found</h3>
       <p>When customers place orders, they'll appear here.</p>
-    </div>
-
-    <!-- LOADING INDICATOR -->
-    <div id="loadingIndicator" style="text-align: center; padding: 40px;">
-      <div class="spinner"></div>
-      <p>Loading orders...</p>
     </div>
   </main>
 
@@ -340,5 +578,124 @@
   </div>
 
   <script src="../js/admin/orders.js"></script>
+  
+  <!-- Skeleton Loader Script for Orders -->
+  <script>
+    // Show skeleton loaders on initial page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const skeletonStats = document.getElementById('skeletonOrderStats');
+      const skeletonFilters = document.getElementById('skeletonOrderFilters');
+      const skeletonOrders = document.getElementById('skeletonOrdersList');
+      const actualFilters = document.getElementById('actualOrderFilters');
+      const actualOrders = document.getElementById('ordersList');
+      const orderStats = document.getElementById('orderStats');
+      const emptyState = document.getElementById('emptyState');
+      
+      // Show skeletons
+      if (skeletonStats) skeletonStats.style.display = 'grid';
+      if (skeletonFilters) skeletonFilters.style.display = 'flex';
+      if (skeletonOrders) skeletonOrders.style.display = 'block';
+      
+      // Hide actual content initially
+      if (actualFilters) actualFilters.style.display = 'none';
+      if (actualOrders) actualOrders.style.display = 'none';
+      if (orderStats) orderStats.style.display = 'none';
+      if (emptyState) emptyState.style.display = 'none';
+      
+      // Check if user is authenticated
+      const token = localStorage.getItem('admin_token');
+      if (!token) {
+        window.location.href = 'admin-login.html';
+        return;
+      }
+      
+      // Show content after a brief delay (simulating loading)
+      setTimeout(() => {
+        if (skeletonStats) skeletonStats.style.display = 'none';
+        if (skeletonFilters) skeletonFilters.style.display = 'none';
+        if (skeletonOrders) skeletonOrders.style.display = 'none';
+        
+        if (actualFilters) actualFilters.style.display = 'flex';
+        if (orderStats) orderStats.style.display = 'grid';
+        
+        // The actual orders will be loaded by orders.js
+      }, 800);
+    });
+    
+    // Function to show skeleton during refresh
+    function showSkeletonDuringRefresh() {
+      const skeletonStats = document.getElementById('skeletonOrderStats');
+      const skeletonOrders = document.getElementById('skeletonOrdersList');
+      const actualOrders = document.getElementById('ordersList');
+      const orderStats = document.getElementById('orderStats');
+      const emptyState = document.getElementById('emptyState');
+      
+      if (emptyState) emptyState.style.display = 'none';
+      if (actualOrders) actualOrders.style.display = 'none';
+      if (orderStats) orderStats.style.display = 'none';
+      
+      if (skeletonStats) skeletonStats.style.display = 'grid';
+      if (skeletonOrders) skeletonOrders.style.display = 'block';
+    }
+    
+    // Override the refresh function to show skeleton
+    const originalRefreshBtn = document.getElementById('refreshBtn');
+    if (originalRefreshBtn) {
+      originalRefreshBtn.addEventListener('click', () => {
+        showSkeletonDuringRefresh();
+        
+        // Call the original loadOrders function after a brief delay
+        setTimeout(() => {
+          if (window.loadOrders) {
+            window.loadOrders();
+          }
+        }, 300);
+      });
+    }
+    
+    // Override the logout function to show skeleton
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to logout?')) {
+          // Show loading skeleton
+          document.body.innerHTML = `
+            <div style="
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              background: linear-gradient(135deg, #111 0%, #333 100%);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+              color: white;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            ">
+              <div class="skeleton-spinner" style="margin-bottom: 20px;"></div>
+              <p>Logging out...</p>
+            </div>
+          `;
+          
+          setTimeout(() => {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            window.location.href = 'admin-login.html';
+          }, 500);
+        }
+      });
+    }
+    
+    // Listen for orders loaded event
+    document.addEventListener('ordersLoaded', () => {
+      const skeletonOrders = document.getElementById('skeletonOrdersList');
+      const actualOrders = document.getElementById('ordersList');
+      
+      if (skeletonOrders) skeletonOrders.style.display = 'none';
+      if (actualOrders) actualOrders.style.display = 'block';
+    });
+  </script>
 </body>
 </html>

@@ -1093,3 +1093,282 @@ footer {
     padding: 15px;
   }
 }
+
+/* ==================== */
+/* SKELETON LOADERS */
+/* ==================== */
+
+/* Skeleton animation */
+@keyframes skeleton-pulse {
+  0% { background-color: rgba(0, 0, 0, 0.05); }
+  50% { background-color: rgba(0, 0, 0, 0.1); }
+  100% { background-color: rgba(0, 0, 0, 0.05); }
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Skeleton product card */
+.skeleton-product {
+  border: 1px solid #eee;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  height: 380px; /* Match your product card height */
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.skeleton-title {
+  height: 20px;
+  width: 70%;
+  margin-bottom: 8px;
+}
+
+.skeleton-price {
+  height: 18px;
+  width: 40%;
+  margin-bottom: 12px;
+}
+
+.skeleton-category {
+  height: 14px;
+  width: 60%;
+  margin-bottom: 12px;
+}
+
+.skeleton-sizes {
+  height: 24px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.skeleton-stock {
+  height: 14px;
+  width: 50%;
+  margin-bottom: 16px;
+}
+
+.skeleton-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.skeleton-button {
+  height: 36px;
+  flex: 1;
+}
+
+/* Skeleton for product grid */
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+/* Skeleton for blog posts */
+.skeleton-blog-post {
+  border: 1px solid #eee;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-blog-title {
+  height: 24px;
+  width: 80%;
+  margin-bottom: 12px;
+}
+
+.skeleton-blog-text {
+  height: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.skeleton-blog-text.short {
+  width: 60%;
+}
+
+/* Skeleton for cart items */
+.skeleton-cart-item {
+  display: flex;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  gap: 20px;
+  align-items: center;
+}
+
+.skeleton-cart-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+}
+
+.skeleton-cart-details {
+  flex: 1;
+}
+
+.skeleton-cart-name {
+  height: 20px;
+  width: 70%;
+  margin-bottom: 8px;
+}
+
+.skeleton-cart-meta {
+  height: 14px;
+  width: 50%;
+  margin-bottom: 12px;
+}
+
+.skeleton-cart-actions {
+  height: 30px;
+  width: 120px;
+}
+
+.skeleton-cart-total {
+  height: 20px;
+  width: 60px;
+}
+
+/* Skeleton for checkout modal */
+.skeleton-checkout-line {
+  height: 20px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.skeleton-checkout-line.short {
+  width: 40%;
+}
+
+.skeleton-checkout-input {
+  height: 45px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 4px;
+}
+
+/* Skeleton for auth modal */
+.skeleton-auth-input {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+.skeleton-auth-button {
+  height: 50px;
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+/* Skeleton for filters */
+.skeleton-filter {
+  height: 35px;
+  width: 120px;
+  border-radius: 6px;
+}
+
+/* Skeleton for product modal */
+.skeleton-modal-left {
+  flex: 1;
+}
+
+.skeleton-modal-image {
+  width: 100%;
+  height: 400px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.skeleton-modal-thumbs {
+  display: flex;
+  gap: 10px;
+}
+
+.skeleton-modal-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+}
+
+.skeleton-modal-right {
+  flex: 1;
+  padding-left: 20px;
+}
+
+.skeleton-modal-title {
+  height: 28px;
+  width: 80%;
+  margin-bottom: 15px;
+}
+
+.skeleton-modal-price {
+  height: 24px;
+  width: 40%;
+  margin-bottom: 20px;
+}
+
+.skeleton-modal-description {
+  height: 16px;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.skeleton-modal-description.short {
+  width: 70%;
+}
+
+.skeleton-modal-sizes {
+  height: 40px;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.skeleton-modal-button {
+  height: 45px;
+  width: 200px;
+  border-radius: 5px;
+}
+
+/* Responsive adjustments for skeletons */
+@media (max-width: 768px) {
+  .skeleton-product {
+    height: 350px;
+  }
+  
+  .skeleton-cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .skeleton-cart-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .skeleton-modal-content {
+    flex-direction: column;
+  }
+  
+  .skeleton-modal-right {
+    padding-left: 0;
+    padding-top: 20px;
+  }
+}

@@ -109,70 +109,197 @@
     </div>
 
     <!-- Product Grid -->
-    <div class="content-container">
-      <div class="product-grid-container">
-        <div class="product-grid" id="product-grid">
-          <!-- Products will be loaded here -->
+    <!-- Product Grid -->
+<div class="content-container">
+  <div class="product-grid-container">
+    <!-- Skeleton Loader (shown while loading) -->
+    <div id="skeleton-loader" class="product-grid-skeleton">
+      <!-- 4 skeleton product cards -->
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
         </div>
-        
-        <div id="loading-area" style="text-align:center; padding:40px;">
-          <div id="loading-spinner" class="spinner"></div>
-          <p id="loading-message">Loading sale items...</p>
-          <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
         </div>
-        
-        <div id="no-products" style="display:none; text-align:center; padding:60px;">
-          <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🔥</div>
-          <h3>No Sale Items Available</h3>
-          <p>Check back soon for new deals and promotions.</p>
-          <div style="margin-top:20px;">
-            <a href="view-brand.html" class="btn" style="margin-right:10px;">Shop Brand</a>
-            <a href="view-thrift.html" class="btn">Shop Thrift</a>
+      </div>
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Actual Product Grid (hidden initially) -->
+    <div class="product-grid" id="product-grid" style="display:none;">
+      <!-- Products will be loaded here -->
+    </div>
+    
+    <!-- Loading and Error States -->
+    <div id="loading-area" style="display:none; text-align:center; padding:40px;">
+      <div id="loading-spinner" class="spinner"></div>
+      <p id="loading-message">Loading sale items...</p>
+      <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+    </div>
+    
+    <div id="no-products" style="display:none; text-align:center; padding:60px;">
+      <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🔥</div>
+      <h3>No Sale Items Available</h3>
+      <p>Check back soon for new deals and promotions.</p>
+      <div style="margin-top:20px;">
+        <a href="view-brand.html" class="btn" style="margin-right:10px;">Shop Brand</a>
+        <a href="view-thrift.html" class="btn">Shop Thrift</a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sidebar Container -->
+  <div id="sidebar-container">
+    <!-- Skeleton Sidebar (shown during loading) -->
+    <aside class="sidebar" id="sidebar-skeleton">
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text small content-placeholder"></div>
+      </div>
+      
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="value-picks-skeleton">
+          <div class="value-item">
+            <div class="skeleton image-placeholder" style="width:50px;height:50px;"></div>
+            <div class="details-placeholder" style="flex:1;">
+              <div class="skeleton skeleton-text" style="width:80%;margin-bottom:5px;"></div>
+              <div class="skeleton skeleton-text" style="width:60%;"></div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="skeleton image-placeholder" style="width:50px;height:50px;"></div>
+            <div class="details-placeholder" style="flex:1;">
+              <div class="skeleton skeleton-text" style="width:80%;margin-bottom:5px;"></div>
+              <div class="skeleton skeleton-text" style="width:60%;"></div>
+            </div>
+          </div>
+          <div class="value-item">
+            <div class="skeleton image-placeholder" style="width:50px;height:50px;"></div>
+            <div class="details-placeholder" style="flex:1;">
+              <div class="skeleton skeleton-text" style="width:80%;margin-bottom:5px;"></div>
+              <div class="skeleton skeleton-text" style="width:60%;"></div>
+            </div>
           </div>
         </div>
       </div>
       
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <div class="sidebar-section">
-          <h3>🔥 Flash Sale Tips</h3>
-          <p>Sale items sell fast! Add to cart quickly to secure your deal.</p>
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+      </div>
+      
+      <div class="promo-banner-skeleton sale-promo">
+        <div class="skeleton skeleton-text medium" style="width: 60px; margin-bottom: 10px;"></div>
+        <div class="skeleton skeleton-text large" style="margin-bottom: 5px;"></div>
+        <div class="skeleton skeleton-text small" style="width: 80%; margin-bottom: 10px;"></div>
+        <div class="skeleton skeleton-text small" style="width: 100px;"></div>
+      </div>
+      
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+      </div>
+    </aside>
+    
+    <!-- Actual Sidebar (hidden initially) -->
+    <aside class="sidebar" id="actual-sidebar" style="display:none;">
+      <div class="sidebar-section">
+        <h3>🔥 Flash Sale Tips</h3>
+        <p>Sale items sell fast! Add to cart quickly to secure your deal.</p>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Best Value Picks</h3>
+        <div class="value-picks" id="value-picks">
+          <!-- Top value items will be loaded here -->
         </div>
-        
-        <div class="sidebar-section">
-          <h3>Best Value Picks</h3>
-          <div class="value-picks" id="value-picks">
-            <!-- Top value items will be loaded here -->
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>How Our Sales Work</h3>
+        <ul class="feature-list">
+          <li>✅ Limited Time Offers</li>
+          <li>✅ Clearance Items</li>
+          <li>✅ Seasonal Discounts</li>
+          <li>✅ Bundle Deals</li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="promo-banner sale-promo">
+          <div class="promo-content">
+            <span class="promo-badge">SALE</span>
+            <h4>Extra 10% Off</h4>
+            <p>Use code: SWISH10 at checkout</p>
+            <span class="promo-cta">Apply Code →</span>
           </div>
         </div>
-        
-        <div class="sidebar-section">
-          <h3>How Our Sales Work</h3>
-          <ul class="feature-list">
-            <li>✅ Limited Time Offers</li>
-            <li>✅ Clearance Items</li>
-            <li>✅ Seasonal Discounts</li>
-            <li>✅ Bundle Deals</li>
-          </ul>
-        </div>
-        
-        <div class="sidebar-section">
-          <div class="promo-banner sale-promo">
-            <div class="promo-content">
-              <span class="promo-badge">SALE</span>
-              <h4>Extra 10% Off</h4>
-              <p>Use code: SWISH10 at checkout</p>
-              <span class="promo-cta">Apply Code →</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="sidebar-section">
-          <h3>Need Help?</h3>
-          <p>Email us for sale inquiries: <strong>sales@swishdrip.com</strong></p>
-        </div>
-      </aside>
-    </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Need Help?</h3>
+        <p>Email us for sale inquiries: <strong>sales@swishdrip.com</strong></p>
+      </div>
+    </aside>
+  </div>
+</div>
 
     <!-- Pagination -->
     <div class="pagination" id="pagination" style="display:none;">

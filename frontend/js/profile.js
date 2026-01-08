@@ -1,15 +1,19 @@
 // js/profile.js - User Profile Management
-const API_BASE = "http://localhost:5000";
+// API_BASE is already defined in script.js - DON'T redeclare it!
 
 // ==================== INITIALIZATION ====================
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Profile page initialized');
   
-  // Check authentication
-  const currentUser = JSON.parse(localStorage.getItem('user_data')) || null;
-  const authToken = localStorage.getItem('auth_token') || null;
+  // Debug: Check what's in localStorage
+  console.log('Auth token from localStorage:', localStorage.getItem('auth_token'));
+  console.log('User data from localStorage:', localStorage.getItem('user_data'));
   
-  if (!currentUser || !authToken) {
+  // Check authentication
+  const authToken = localStorage.getItem('auth_token');
+  
+  if (!authToken) {
+    console.log('No auth token found, redirecting to index.html');
     window.location.href = 'index.html';
     return;
   }
@@ -20,9 +24,31 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Load profile data
   loadProfileData();
-  loadOrders();
-  loadWishlistPreview();
 });
+
+// ==================== SKELETON MANAGEMENT ====================
+function showSkeletons() {
+  const page = document.getElementById('profile-page');
+  if (page) page.classList.add('loading');
+}
+
+function hideSkeletons() {
+  const page = document.getElementById('profile-page');
+  if (page) page.classList.remove('loading');
+  
+  // Show actual content
+  const skeletons = document.querySelectorAll('.skeleton-hidden');
+  skeletons.forEach(el => {
+    el.style.display = 'block';
+    el.classList.remove('skeleton-hidden');
+  });
+  
+  // Hide skeleton containers
+  const skeletonContainers = document.querySelectorAll('.skeleton:not(.skeleton-hidden)');
+  skeletonContainers.forEach(el => {
+    el.style.display = 'none';
+  });
+}
 
 // ==================== NAVIGATION ====================
 function setupNavigation() {
@@ -43,7 +69,17 @@ function setupNavigation() {
       
       // Show selected tab
       const tabId = this.dataset.tab + '-tab';
-      document.getElementById(tabId).classList.add('active');
+      const tabElement = document.getElementById(tabId);
+      if (tabElement) {
+        tabElement.classList.add('active');
+        
+        // Load data for the selected tab if needed
+        if (this.dataset.tab === 'orders') {
+          loadOrders();
+        } else if (this.dataset.tab === 'wishlist') {
+          loadWishlistPreview();
+        }
+      }
     });
   });
   
@@ -63,6 +99,8 @@ function setupNavigation() {
 // ==================== PROFILE DATA ====================
 async function loadProfileData() {
   try {
+    showSkeletons();
+    
     const token = localStorage.getItem('auth_token');
     const response = await fetch(`${API_BASE}/api/auth/me`, {
       headers: {
@@ -77,48 +115,71 @@ async function loadProfileData() {
     const user = await response.json();
     
     // Update profile display
-    document.getElementById('profile-name').textContent = user.name || 'User';
-    document.getElementById('profile-email').textContent = user.email || '';
+    const profileName = document.getElementById('profile-name');
+    const profileEmail = document.getElementById('profile-email');
+    const memberSince = document.getElementById('member-since');
+    
+    if (profileName) profileName.textContent = user.name || 'User';
+    if (profileEmail) profileEmail.textContent = user.email || '';
     
     // Format member since date
-    if (user.createdAt) {
+    if (user.createdAt && memberSince) {
       const date = new Date(user.createdAt);
-      document.getElementById('member-since').textContent = 
+      memberSince.textContent = 
         `Member since: ${date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
     }
     
     // Update profile picture
     const avatarImg = document.getElementById('profile-avatar-img');
-    if (user.profilePicture) {
-      avatarImg.src = user.profilePicture.startsWith('http') ? 
-        user.profilePicture : `${API_BASE}${user.profilePicture}`;
-    } else {
-      // Generate avatar based on name
-      const initials = user.name ? user.name.charAt(0).toUpperCase() : 'U';
-      avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=111&color=fff&size=100`;
+    if (avatarImg) {
+      if (user.profilePicture) {
+        avatarImg.src = user.profilePicture.startsWith('http') ? 
+          user.profilePicture : `${API_BASE}${user.profilePicture}`;
+        avatarImg.onerror = function() {
+          this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=111&color=fff&size=100`;
+        };
+      } else {
+        // Generate avatar based on name
+        avatarImg.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name || 'User')}&background=111&color=fff&size=100`;
+      }
     }
     
     // Set form values
-    document.getElementById('edit-name').value = user.name || '';
-    document.getElementById('edit-email').value = user.email || '';
-    document.getElementById('edit-phone').value = user.phone || '';
+    const editName = document.getElementById('edit-name');
+    const editEmail = document.getElementById('edit-email');
+    const editPhone = document.getElementById('edit-phone');
+    const editBirthday = document.getElementById('edit-birthday');
+    const editAddress = document.getElementById('edit-address');
+    const editCity = document.getElementById('edit-city');
+    const editProvince = document.getElementById('edit-province');
+    const editPostal = document.getElementById('edit-postal');
+    
+    if (editName) editName.value = user.name || '';
+    if (editEmail) editEmail.value = user.email || '';
+    if (editPhone) editPhone.value = user.phone || '';
     
     // Set address fields
     if (user.address) {
-      document.getElementById('edit-address').value = user.address.street || '';
-      document.getElementById('edit-city').value = user.address.city || '';
-      document.getElementById('edit-province').value = user.address.province || '';
-      document.getElementById('edit-postal').value = user.address.postalCode || '';
+      if (editAddress) editAddress.value = user.address.street || '';
+      if (editCity) editCity.value = user.address.city || '';
+      if (editProvince) editProvince.value = user.address.province || '';
+      if (editPostal) editPostal.value = user.address.postalCode || '';
     }
     
     // Set birthday if available
-    if (user.birthday) {
-      document.getElementById('edit-birthday').value = user.birthday;
+    if (user.birthday && editBirthday) {
+      editBirthday.value = user.birthday;
     }
+    
+    // Hide skeletons and show actual content
+    hideSkeletons();
     
   } catch (error) {
     console.error('Error loading profile:', error);
     showToast('Failed to load profile data', 'error');
+    
+    // Still hide skeletons to show error state
+    hideSkeletons();
   }
 }
 
@@ -163,16 +224,25 @@ async function updateProfile() {
   try {
     const token = localStorage.getItem('auth_token');
     
+    const editName = document.getElementById('edit-name');
+    const editEmail = document.getElementById('edit-email');
+    const editPhone = document.getElementById('edit-phone');
+    const editBirthday = document.getElementById('edit-birthday');
+    const editAddress = document.getElementById('edit-address');
+    const editCity = document.getElementById('edit-city');
+    const editProvince = document.getElementById('edit-province');
+    const editPostal = document.getElementById('edit-postal');
+    
     const profileData = {
-      name: document.getElementById('edit-name').value,
-      email: document.getElementById('edit-email').value,
-      phone: document.getElementById('edit-phone').value,
-      birthday: document.getElementById('edit-birthday').value || undefined,
+      name: editName ? editName.value : '',
+      email: editEmail ? editEmail.value : '',
+      phone: editPhone ? editPhone.value : '',
+      birthday: editBirthday ? editBirthday.value || undefined : undefined,
       address: {
-        street: document.getElementById('edit-address').value,
-        city: document.getElementById('edit-city').value,
-        province: document.getElementById('edit-province').value,
-        postalCode: document.getElementById('edit-postal').value
+        street: editAddress ? editAddress.value : '',
+        city: editCity ? editCity.value : '',
+        province: editProvince ? editProvince.value : '',
+        postalCode: editPostal ? editPostal.value : ''
       }
     };
     
@@ -192,8 +262,11 @@ async function updateProfile() {
       localStorage.setItem('user_data', JSON.stringify(user));
       
       // Update UI
-      document.getElementById('profile-name').textContent = profileData.name;
-      document.getElementById('profile-email').textContent = profileData.email;
+      const profileName = document.getElementById('profile-name');
+      const profileEmail = document.getElementById('profile-email');
+      
+      if (profileName) profileName.textContent = profileData.name;
+      if (profileEmail) profileEmail.textContent = profileData.email;
       
       showToast('Profile updated successfully!', 'success');
     } else {
@@ -226,7 +299,9 @@ async function uploadAvatar(file) {
       
       // Update avatar image
       const avatarImg = document.getElementById('profile-avatar-img');
-      avatarImg.src = data.profilePicture;
+      if (avatarImg) {
+        avatarImg.src = data.profilePicture;
+      }
       
       // Update localStorage
       const user = JSON.parse(localStorage.getItem('user_data'));
@@ -260,10 +335,14 @@ async function loadOrders() {
     });
     
     const ordersList = document.getElementById('orders-list');
+    const skeletonOrders = document.getElementById('skeleton-orders');
     const emptyOrders = document.getElementById('empty-orders');
     
     if (response.ok) {
       const orders = await response.json();
+      
+      // Hide skeleton
+      if (skeletonOrders) skeletonOrders.style.display = 'none';
       
       if (orders.length === 0) {
         if (ordersList) ordersList.style.display = 'none';
@@ -273,6 +352,7 @@ async function loadOrders() {
       
       if (emptyOrders) emptyOrders.style.display = 'none';
       if (ordersList) {
+        ordersList.style.display = 'block';
         renderOrders(orders);
       }
     } else {
@@ -281,8 +361,12 @@ async function loadOrders() {
     
   } catch (error) {
     console.error('Error loading orders:', error);
+    const skeletonOrders = document.getElementById('skeleton-orders');
     const ordersList = document.getElementById('orders-list');
+    
+    if (skeletonOrders) skeletonOrders.style.display = 'none';
     if (ordersList) {
+      ordersList.style.display = 'block';
       ordersList.innerHTML = `
         <div style="text-align: center; padding: 40px; color: #666;">
           <p>Failed to load orders. Please try again later.</p>
@@ -301,37 +385,37 @@ function renderOrders(orders) {
     <div class="order-item">
       <div class="order-header">
         <div>
-          <div class="order-id">Order #${order._id.substring(18, 24).toUpperCase()}</div>
+          <div class="order-id">Order #${order._id ? order._id.substring(18, 24).toUpperCase() : 'N/A'}</div>
           <div class="order-date">${formatDate(order.createdAt)}</div>
         </div>
         <span class="order-status ${order.status === 'delivered' ? 'status-delivered' : 'status-pending'}">
-          ${order.status}
+          ${order.status || 'pending'}
         </span>
       </div>
       
       <div class="order-items">
-        ${order.items.map(item => `
+        ${(order.items || []).map(item => `
           <div class="order-item-product">
             <div>
-              <div class="product-name">${item.name}</div>
-              <div class="product-quantity">Qty: ${item.quantity}${item.size ? ` • Size: ${item.size}` : ''}</div>
+              <div class="product-name">${item.name || 'Product'}</div>
+              <div class="product-quantity">Qty: ${item.quantity || 1}${item.size ? ` • Size: ${item.size}` : ''}</div>
             </div>
-            <div class="product-price">R${formatPrice(item.price * item.quantity)}</div>
+            <div class="product-price">R${formatPrice((item.price || 0) * (item.quantity || 1))}</div>
           </div>
         `).join('')}
       </div>
       
       <div class="order-total">
-        Total: R${formatPrice(order.total)}
+        Total: R${formatPrice(order.total || 0)}
       </div>
       
       <div class="order-actions">
-        ${order.status === 'pending' ? `
-          <button class="btn small" onclick="contactSupport('${order._id}')">
+        ${(order.status === 'pending') ? `
+          <button class="btn small" onclick="contactSupport('${order._id || ''}')">
             Contact Support
           </button>
         ` : ''}
-        <button class="btn small secondary" onclick="reorder('${order._id}')">
+        <button class="btn small secondary" onclick="reorder('${order._id || ''}')">
           Reorder
         </button>
       </div>
@@ -352,11 +436,15 @@ async function loadWishlistPreview() {
     });
     
     const wishlistPreview = document.getElementById('wishlist-preview');
+    const skeletonWishlist = document.getElementById('skeleton-wishlist');
     const emptyWishlist = document.getElementById('empty-wishlist-preview');
     
     if (response.ok) {
       const data = await response.json();
       const wishlist = data.wishlist || [];
+      
+      // Hide skeleton
+      if (skeletonWishlist) skeletonWishlist.style.display = 'none';
       
       if (wishlist.length === 0) {
         if (wishlistPreview) wishlistPreview.style.display = 'none';
@@ -366,12 +454,15 @@ async function loadWishlistPreview() {
       
       if (emptyWishlist) emptyWishlist.style.display = 'none';
       if (wishlistPreview) {
+        wishlistPreview.style.display = 'grid';
         renderWishlistPreview(wishlist.slice(0, 4)); // Show first 4 items
       }
     }
     
   } catch (error) {
     console.error('Error loading wishlist:', error);
+    const skeletonWishlist = document.getElementById('skeleton-wishlist');
+    if (skeletonWishlist) skeletonWishlist.style.display = 'none';
   }
 }
 
@@ -382,13 +473,13 @@ function renderWishlistPreview(wishlist) {
   const previewHTML = wishlist.map(product => `
     <div class="wishlist-preview-item">
       <img src="${product.image ? (product.image.startsWith('http') ? product.image : `${API_BASE}${product.image}`) : 'https://via.placeholder.com/200x150?text=Product'}" 
-           alt="${product.name}" 
+           alt="${product.name || 'Product'}" 
            class="wishlist-preview-image"
            onerror="this.src='https://via.placeholder.com/200x150?text=Product'">
       <div class="wishlist-preview-content">
-        <div class="wishlist-preview-name">${product.name}</div>
+        <div class="wishlist-preview-name">${product.name || 'Product Name'}</div>
         <div class="wishlist-preview-price">
-          R${formatPrice(product.sale && product.salePrice ? product.salePrice : product.price)}
+          R${formatPrice(product.sale && product.salePrice ? product.salePrice : product.price || 0)}
         </div>
       </div>
     </div>
@@ -399,22 +490,31 @@ function renderWishlistPreview(wishlist) {
 
 // ==================== PASSWORD MANAGEMENT ====================
 async function updatePassword() {
-  const currentPassword = document.getElementById('current-password').value;
-  const newPassword = document.getElementById('new-password').value;
-  const confirmPassword = document.getElementById('confirm-password').value;
+  const currentPassword = document.getElementById('current-password');
+  const newPassword = document.getElementById('new-password');
+  const confirmPassword = document.getElementById('confirm-password');
   
-  // Validation
   if (!currentPassword || !newPassword || !confirmPassword) {
     showToast('Please fill in all password fields', 'error');
     return;
   }
   
-  if (newPassword !== confirmPassword) {
+  const currentPasswordVal = currentPassword.value;
+  const newPasswordVal = newPassword.value;
+  const confirmPasswordVal = confirmPassword.value;
+  
+  // Validation
+  if (!currentPasswordVal || !newPasswordVal || !confirmPasswordVal) {
+    showToast('Please fill in all password fields', 'error');
+    return;
+  }
+  
+  if (newPasswordVal !== confirmPasswordVal) {
     showToast('New passwords do not match', 'error');
     return;
   }
   
-  if (newPassword.length < 6) {
+  if (newPasswordVal.length < 6) {
     showToast('Password must be at least 6 characters', 'error');
     return;
   }
@@ -429,16 +529,16 @@ async function updatePassword() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        currentPassword,
-        newPassword
+        currentPassword: currentPasswordVal,
+        newPassword: newPasswordVal
       })
     });
     
     if (response.ok) {
       // Clear form
-      document.getElementById('current-password').value = '';
-      document.getElementById('new-password').value = '';
-      document.getElementById('confirm-password').value = '';
+      currentPassword.value = '';
+      newPassword.value = '';
+      confirmPassword.value = '';
       
       showToast('Password updated successfully!', 'success');
     } else {
@@ -453,13 +553,17 @@ async function updatePassword() {
 }
 
 function updatePasswordStrength() {
-  const password = document.getElementById('new-password').value;
+  const passwordInput = document.getElementById('new-password');
+  if (!passwordInput) return;
+  
+  const password = passwordInput.value;
   const strengthBar = document.querySelector('.strength-bar');
   const strengthText = document.querySelector('.strength-text');
   
+  if (!strengthBar || !strengthText) return;
+  
   if (!password) {
     strengthBar.style.width = '0%';
-    strengthBar.style.backgroundColor = '#e53935';
     strengthText.textContent = 'Password strength';
     return;
   }
@@ -495,9 +599,12 @@ function updatePasswordStrength() {
 }
 
 function requestPasswordReset() {
-  const email = document.getElementById('profile-email').value;
+  const emailElement = document.getElementById('profile-email');
+  if (!emailElement) return;
   
-  if (!email) {
+  const email = emailElement.textContent;
+  
+  if (!email || email === 'Loading...') {
     showToast('Please save your email first', 'error');
     return;
   }
@@ -510,11 +617,13 @@ function requestPasswordReset() {
 
 // ==================== ACCOUNT DELETION ====================
 function confirmDeleteAccount() {
-  document.getElementById('delete-modal').style.display = 'flex';
+  const deleteModal = document.getElementById('delete-modal');
+  if (deleteModal) deleteModal.style.display = 'flex';
 }
 
 function closeDeleteModal() {
-  document.getElementById('delete-modal').style.display = 'none';
+  const deleteModal = document.getElementById('delete-modal');
+  if (deleteModal) deleteModal.style.display = 'none';
 }
 
 async function deleteAccount() {
@@ -585,15 +694,28 @@ function showToast(msg, type = 'info', duration = 3000) {
     zIndex: '10000',
     maxWidth: '400px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-    animation: 'slideUp 0.3s ease',
+    animation: 'fadeIn 0.3s ease',
     ...styles[type]
   });
+  
+  // Add fadeIn animation if not already in CSS
+  if (!document.querySelector('#toast-animation')) {
+    const style = document.createElement('style');
+    style.id = 'toast-animation';
+    style.textContent = `
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
   
   document.body.appendChild(toast);
   
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(100px)';
+    toast.style.transform = 'translateY(20px)';
     setTimeout(() => toast.remove(), 300);
   }, duration);
   
@@ -602,7 +724,8 @@ function showToast(msg, type = 'info', duration = 3000) {
 
 // ==================== ORDER ACTIONS ====================
 function contactSupport(orderId) {
-  showToast(`Contact support about order ${orderId.substring(18, 24).toUpperCase()}`, 'info');
+  const orderNum = orderId ? orderId.substring(18, 24).toUpperCase() : 'N/A';
+  showToast(`Contact support about order ${orderNum}`, 'info');
 }
 
 async function reorder(orderId) {

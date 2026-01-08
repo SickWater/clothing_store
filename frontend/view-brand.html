@@ -96,62 +96,172 @@
     </div>
 
     <!-- Product Grid -->
-    <div class="content-container">
-      <div class="product-grid-container">
-        <div class="product-grid" id="product-grid">
-          <!-- Products will be loaded here -->
+    <!-- Product Grid -->
+<div class="content-container">
+  <div class="product-grid-container">
+    <!-- Skeleton Loader (shown while loading) -->
+    <div id="skeleton-loader" class="product-grid-skeleton">
+      <!-- Repeat skeleton product cards 8 times -->
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
         </div>
-        
-        <div id="loading-area" style="text-align:center; padding:40px;">
-          <div id="loading-spinner" class="spinner"></div>
-          <p id="loading-message">Loading brand items...</p>
-          <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
         </div>
-        
-        <div id="no-products" style="display:none; text-align:center; padding:60px;">
-          <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🛍️</div>
-          <h3>No Brand Items Found</h3>
-          <p>Try changing your filters or check back later for new arrivals.</p>
-          <button id="reset-filters" class="btn">Reset All Filters</button>
+      </div>
+      <!-- Repeat 7 more times (just include 4 total for brevity) -->
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+      <div class="product-skeleton">
+        <div class="skeleton skeleton-rect image-placeholder"></div>
+        <div class="skeleton skeleton-text large title-placeholder"></div>
+        <div class="skeleton skeleton-text medium price-placeholder"></div>
+        <div class="sizes-placeholder">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+        </div>
+        <div class="skeleton skeleton-text small"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+          <div class="skeleton skeleton-text button-placeholder" style="flex:1"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Actual Product Grid (hidden initially) -->
+    <div class="product-grid" id="product-grid" style="display:none;">
+      <!-- Products will be loaded here -->
+    </div>
+    
+    <!-- Loading and Error States -->
+    <div id="loading-area" style="display:none; text-align:center; padding:40px;">
+      <div id="loading-spinner" class="spinner"></div>
+      <p id="loading-message">Loading items...</p>
+      <button id="retry-btn" style="display:none;" class="btn">Retry</button>
+    </div>
+    
+    <div id="no-products" style="display:none; text-align:center; padding:60px;">
+      <div style="font-size:48px; color:#ddd; margin-bottom:20px;">🛍️</div>
+      <h3>No Items Found</h3>
+      <p>Try changing your filters or check back later for new arrivals.</p>
+      <button id="reset-filters" class="btn">Reset All Filters</button>
+    </div>
+  </div>
+  
+  <!-- Sidebar Container -->
+  <div id="sidebar-container">
+    <!-- Skeleton Sidebar (shown during loading) -->
+    <aside class="sidebar" id="sidebar-skeleton">
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text small content-placeholder"></div>
+      </div>
+      
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="brand-tags-skeleton">
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
+          <span class="skeleton skeleton-chip"></span>
         </div>
       </div>
       
-      <!-- Sidebar (optional - for future features) -->
-      <aside class="sidebar">
-        <div class="sidebar-section">
-          <h3>About Brand Items</h3>
-          <p>Our brand collection features premium streetwear, designer pieces, and authentic branded clothing.</p>
+      <div class="sidebar-section-skeleton">
+        <div class="skeleton skeleton-text large header-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+        <div class="skeleton skeleton-text content-placeholder"></div>
+      </div>
+      
+      <div class="promo-banner-skeleton">
+        <div class="skeleton skeleton-text medium" style="width: 60px; margin-bottom: 10px;"></div>
+        <div class="skeleton skeleton-text large" style="margin-bottom: 5px;"></div>
+        <div class="skeleton skeleton-text small" style="width: 80%; margin-bottom: 10px;"></div>
+        <div class="skeleton skeleton-text small" style="width: 100px;"></div>
+      </div>
+    </aside>
+    
+    <!-- Actual Sidebar (hidden initially) -->
+    <aside class="sidebar" id="actual-sidebar" style="display:none;">
+      <!-- YOUR ORIGINAL SIDEBAR CONTENT GOES HERE -->
+      <!-- For example, in view-brand.html: -->
+      <div class="sidebar-section">
+        <h3>About Brand Items</h3>
+        <p>Our brand collection features premium streetwear, designer pieces, and authentic branded clothing.</p>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Popular Brands</h3>
+        <div class="brand-tags" id="popular-brands">
+          <!-- Popular brands will be loaded here -->
         </div>
-        
-        <div class="sidebar-section">
-          <h3>Popular Brands</h3>
-          <div class="brand-tags" id="popular-brands">
-            <!-- Popular brands will be loaded here -->
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Why Choose Brand?</h3>
+        <ul class="feature-list">
+          <li>✅ Authentic & New</li>
+          <li>✅ Premium Quality</li>
+          <li>✅ Latest Styles</li>
+          <li>✅ Brand Warranty</li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <a href="view-sale.html" class="promo-banner">
+          <div class="promo-content">
+            <span class="promo-badge">SALE</span>
+            <h4>Limited Time Deals</h4>
+            <p>Up to 50% off selected items</p>
+            <span class="promo-cta">Shop Now →</span>
           </div>
-        </div>
-        
-        <div class="sidebar-section">
-          <h3>Why Choose Brand?</h3>
-          <ul class="feature-list">
-            <li>✅ Authentic & New</li>
-            <li>✅ Premium Quality</li>
-            <li>✅ Latest Styles</li>
-            <li>✅ Brand Warranty</li>
-          </ul>
-        </div>
-        
-        <div class="sidebar-section">
-          <a href="view-sale.html" class="promo-banner">
-            <div class="promo-content">
-              <span class="promo-badge">SALE</span>
-              <h4>Limited Time Deals</h4>
-              <p>Up to 50% off selected items</p>
-              <span class="promo-cta">Shop Now →</span>
-            </div>
-          </a>
-        </div>
-      </aside>
-    </div>
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>
 
     <!-- Pagination -->
     <div class="pagination" id="pagination" style="display:none;">
